@@ -165,7 +165,7 @@ namespace NeoCortexApiSample
             }
 
             // Learning process will take 1000 iterations (cycles)
-            int maxSPLearningCycles = 300;
+            int maxSPLearningCycles = 1000;
 
             int numStableCycles = 0;
 
@@ -221,9 +221,8 @@ namespace NeoCortexApiSample
 
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
 
-                //Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
+                Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
             }
-
         }
     }
 }
