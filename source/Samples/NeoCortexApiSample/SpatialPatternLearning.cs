@@ -81,7 +81,7 @@ namespace NeoCortexApiSample
 
             var sp = RunExperiment(cfg, encoder, inputValues);
 
-            //RunRustructuringExperiment(sp, encoder, inputValues);
+            RunRustructuringExperiment(sp, encoder, inputValues);
         }
 
        
@@ -165,7 +165,7 @@ namespace NeoCortexApiSample
             }
 
             // Learning process will take 1000 iterations (cycles)
-            int maxSPLearningCycles = 1000;
+            int maxSPLearningCycles = 300;
 
             int numStableCycles = 0;
 
@@ -221,8 +221,9 @@ namespace NeoCortexApiSample
 
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
 
-                Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
+                //Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
             }
+
         }
     }
 }
