@@ -141,5 +141,11 @@ namespace MultiSequenceLearning
 
         //Comments will be here
 
+        public static string StringifyIntDoubleDictionaryValuesByKey(Dictionary<int, double> dictionary)
+        {
+            
+        }
+
+
     }
 }
