@@ -592,6 +592,12 @@ namespace NeoCortexApi
             }
 
             StringBuilder result = new StringBuilder();
+            foreach (var key in dictionary.Keys)
+            {
+                // Access the value using the key and append it to the result
+                result.Append($"{dictionary[key]},");
+            }
+
 
         }
 
