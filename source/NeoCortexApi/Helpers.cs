@@ -586,7 +586,11 @@ namespace NeoCortexApi
 
         public static string JoinDictionaryValuesToStringy(Dictionary<int, double> dictionary)
         {
-           
+            if (dictionary == null)
+            {
+                return "null";
+            }
+
         }
 
     }
