@@ -591,6 +591,8 @@ namespace NeoCortexApi
                 return "null";
             }
 
+            StringBuilder result = new StringBuilder();
+
         }
 
     }
