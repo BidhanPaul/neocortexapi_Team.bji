@@ -584,9 +584,10 @@ namespace NeoCortexApi
 
         //Comments will be here
 
-        public static string StringifyIntDoubleDictionaryValuesByKey(Dictionary<int, double> dictionary)
+        public static string JoinDictionaryValuesToStringy(Dictionary<int, double> dictionary)
         {
-
+           
         }
+
     }
 }
