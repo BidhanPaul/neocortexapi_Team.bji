@@ -598,7 +598,7 @@ namespace NeoCortexApi
                 result.Append($"{dictionary[key]},");
             }
 
-
+            return result.ToString();
         }
 
     }
