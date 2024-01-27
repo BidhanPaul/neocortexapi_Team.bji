@@ -601,5 +601,12 @@ namespace NeoCortexApi
             return result.ToString();
         }
 
+        //Commemts wil be here
+
+        public static string ConvertValuesToBinaryString(IEnumerable<double> values, double threshold, string separator = ",")
+        {
+
+        }
+
     }
 }
