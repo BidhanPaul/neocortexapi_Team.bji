@@ -221,8 +221,15 @@ namespace NeoCortexApiSample
 
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
 
+<<<<<<< HEAD
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
                
+=======
+                // Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
+
+               Debug.WriteLine ($"Probability:{Helpers.StringifyIntDoubleDictionaryValuesByKey(probabilities)}");
+               Debug.WriteLine ($"probabilities Length: {probabilities}");
+>>>>>>> c6ce5b2990337dd7333119b4b8ed49d9baf329f4
             }
         }
     }
