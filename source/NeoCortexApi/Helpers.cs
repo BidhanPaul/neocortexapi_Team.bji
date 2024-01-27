@@ -603,7 +603,7 @@ namespace NeoCortexApi
 
         //Commemts wil be here
 
-        public static string ConvertValuesToBinaryString(IEnumerable<double> values, double threshold, string separator = ",")
+        public static string ThresholdingProbabilities(IEnumerable<double> values, double threshold, string separator = ",")
         {
             if (values == null)
             {
@@ -611,7 +611,12 @@ namespace NeoCortexApi
             }
             StringBuilder result = new StringBuilder();
 
-
+            foreach (var numericValue in values)
+            {
+                int thresholdedValue = (numericValue >= threshold) ? 1 : 0;
+                result.Append(thresholdedValue).Append(separator);
+            }
+            return result.ToString();
         }
 
     }
