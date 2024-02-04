@@ -228,7 +228,7 @@ namespace NeoCortexApiSample
                Debug.WriteLine($"probabilities Length: {probabilities}");
 
                 var probabilityValues = probabilities.Values;
-
+                var ThresholdValue = 8.3;
 
             }
         }
