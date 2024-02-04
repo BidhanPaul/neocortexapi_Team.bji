@@ -247,8 +247,9 @@ namespace NeoCortexApiSample
 
             foreach (var probabilitiesList in heatmapData)
             {
-                
+                string filePath = $"heatmap_{i}.png";
 
+                
 
             }
 
