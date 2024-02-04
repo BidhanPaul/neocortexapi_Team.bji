@@ -249,8 +249,11 @@ namespace NeoCortexApiSample
             {
                 string filePath = $"heatmap_{i}.png";
 
-                
+                double[] array = probabilitiesList.ToArray();
 
+                NeoCortexUtils.Draw1DHeatmaps(new List<double[]>() { array });
+
+                i++;
             }
 
 
