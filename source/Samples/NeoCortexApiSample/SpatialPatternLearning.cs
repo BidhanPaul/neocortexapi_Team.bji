@@ -1,4 +1,5 @@
-﻿using NeoCortexApi;
+﻿using NeoCortex;
+using NeoCortexApi;
 using NeoCortexApi.Encoders;
 using NeoCortexApi.Entities;
 using NeoCortexApi.Network;
@@ -228,15 +229,22 @@ namespace NeoCortexApiSample
                Debug.WriteLine($"probabilities Length: {probabilities}");
 
                 var probabilityValues = probabilities.Values;
+
                 var ThresholdValue = 8.3;
+
                 string ThresholdedPermanence = Helpers.ConvertValuesToBinaryString(probabilityValues, ThresholdValue);
+
                 Debug.WriteLine($"Thresholded Probability: {ThresholdedPermanence}");
+
                 Debug.WriteLine($"Encoded Values: {Helpers.StringifyVector(inputVector)}");
-
-
-
 
             }
         }
+
+        private void Generate1DHeatmaps(List<List<double>> heatmapData)
+        {
+            
+        }
+
     }
 }
