@@ -227,6 +227,9 @@ namespace NeoCortexApiSample
 
                Debug.WriteLine($"probabilities Length: {probabilities}");
 
+                var probabilityValues = probabilities.Values;
+
+
             }
         }
     }
