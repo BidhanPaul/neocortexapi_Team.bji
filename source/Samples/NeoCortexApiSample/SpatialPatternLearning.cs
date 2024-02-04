@@ -230,6 +230,8 @@ namespace NeoCortexApiSample
                 var probabilityValues = probabilities.Values;
                 var ThresholdValue = 8.3;
                 string ThresholdedPermanence = Helpers.ConvertValuesToBinaryString(probabilityValues, ThresholdValue);
+                Debug.WriteLine($"Thresholded Probability: {ThresholdedPermanence}");
+
 
 
             }
