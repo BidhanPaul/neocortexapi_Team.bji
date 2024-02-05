@@ -242,7 +242,10 @@ namespace NeoCortexApiSample
 
                 Debug.WriteLine($"Encoded Values: {Helpers.StringifyVector(encodedInputs)}");
 
+                heatmapData.Add(probabilities.Values.ToList());
             }
+
+            Generate1DHeatmaps(heatmapData);
         }
 
         private void Generate1DHeatmaps(List<List<double>> heatmapData)
