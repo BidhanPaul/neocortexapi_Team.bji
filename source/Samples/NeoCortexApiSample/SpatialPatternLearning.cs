@@ -212,6 +212,8 @@ namespace NeoCortexApiSample
 
         private void RunRustructuringExperiment(SpatialPooler sp, EncoderBase encoder, List<double> inputValues)
         {
+            List<List<double>> heatmapData = new List<List<double>>();
+
             foreach (var input in inputValues)
             {
                 var inpSdr = encoder.Encode(input);
