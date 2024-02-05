@@ -236,7 +236,9 @@ namespace NeoCortexApiSample
 
                 Debug.WriteLine($"Thresholded Probability: {ThresholdedPermanence}");
 
-                Debug.WriteLine($"Encoded Values: {Helpers.StringifyVector(inputVector)}");
+                var encodedInputs = encoder.Encode(input);
+
+                Debug.WriteLine($"Encoded Values: {Helpers.StringifyVector(encodedInputs)}");
 
             }
         }
