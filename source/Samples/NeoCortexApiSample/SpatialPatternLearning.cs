@@ -265,6 +265,8 @@ namespace NeoCortexApiSample
                 Debug.WriteLine($"HeatMap Genarated Successfully");
 
                 i++;
+
+                // Generating heatmap
             }
 
 
