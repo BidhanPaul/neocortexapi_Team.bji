@@ -232,7 +232,7 @@ namespace NeoCortexApiSample
 
                 var probabilityValues = probabilities.Values;
 
-                var ThresholdValue = 8.3;
+                var ThresholdValue = 5;
 
                 string ThresholdedPermanence = Helpers.ThresholdingProbabilities(probabilityValues, ThresholdValue);
 
