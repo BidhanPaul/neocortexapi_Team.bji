@@ -244,7 +244,7 @@ namespace NeoCortexApiSample
 
                 heatmapData.Add(probabilities.Values.ToList());
             }
-
+            
             Generate1DHeatmaps(heatmapData);
         }
 
@@ -259,7 +259,7 @@ namespace NeoCortexApiSample
                 Debug.WriteLine($"FilePath: {filePath}");
                 
                 double[] probabilityCollectionArray = probabilitiesList.ToArray();
-
+                //Have to pass the perameteres for heatmaps
                 NeoCortexUtils.Draw1DHeatmaps(new List<double[]>() { probabilityCollectionArray });
 
                 Debug.WriteLine($"HeatMap Genarated Successfully");

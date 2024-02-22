@@ -598,6 +598,12 @@ namespace NeoCortexApi
                 result.Append($"{dictionary[key]},");
             }
 
+            // Remove the trailing separator
+            if (result.Length > 0)
+            {
+                result.Length--; // Remove the last character
+            }
+
             return result.ToString();
         }
 
@@ -616,6 +622,13 @@ namespace NeoCortexApi
                 int thresholdedValue = (numericValue >= threshold) ? 1 : 0;
                 result.Append(thresholdedValue).Append(separator);
             }
+
+            // Remove the trailing separator
+            if (result.Length > 0)
+            {
+                result.Length--; // Remove the last character
+            }
+
             return result.ToString();
         }
 
