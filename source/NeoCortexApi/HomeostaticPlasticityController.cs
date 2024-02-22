@@ -623,6 +623,11 @@ namespace NeoCortexApi
 
             return controller;
         }
+
+        public void HandleStabilityEvent(bool v1, int v2, double v3, List<int> list)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }
