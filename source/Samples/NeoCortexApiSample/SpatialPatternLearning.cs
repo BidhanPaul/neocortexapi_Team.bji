@@ -236,6 +236,11 @@ namespace NeoCortexApiSample
 
                 }
                 for (int inputIndex = 0; inputIndex < maxInput; inputIndex++)
+                {
+                    if (!reconstructedDictionary.ContainsKey(inputIndex))
+                    
+                }
+
 
             }
 
