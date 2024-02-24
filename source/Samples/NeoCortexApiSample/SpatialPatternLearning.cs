@@ -228,6 +228,11 @@ namespace NeoCortexApiSample
 
                 foreach (var kvp in reconstructedPermanence)
                 {
+                    int inputIndex = kvp.Key;
+                    double probability = kvp.Value;
+
+
+                    extendedDictionary[inputIndex] = probability;
 
                 }
 
