@@ -224,25 +224,7 @@ namespace NeoCortexApiSample
 
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
 
-                // Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
-
-               Debug.WriteLine($"Probability:{Helpers.StringifyDictionarybykeys(probabilities)}");
-
-               Debug.WriteLine($"probabilities Length: {probabilities}");
-
-                var probabilityValues = probabilities.Values;
-
-                var ThresholdValue = 5;
-
-                string ThresholdedPermanence = Helpers.ThresholdingProbabilities(probabilityValues, ThresholdValue);
-
-                Debug.WriteLine($"Thresholded Probability: {ThresholdedPermanence}");
-
-                var encodedInputs = encoder.Encode(input);
-
-                Debug.WriteLine($"Encoded Values: {Helpers.StringifyVector(encodedInputs)}");
-
-                heatmapData.Add(probabilities.Values.ToList());
+               
             }
             
             Generate1DHeatmaps(heatmapData);
