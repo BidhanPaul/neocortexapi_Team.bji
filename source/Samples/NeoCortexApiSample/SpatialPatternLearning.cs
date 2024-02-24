@@ -224,9 +224,10 @@ namespace NeoCortexApiSample
 
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
 
-               
+                Dictionary<int, double> allPermanenceDictionary = new Dictionary<int, double>();
+
             }
-            
+
             Generate1DHeatmaps(heatmapData);
         }
 
