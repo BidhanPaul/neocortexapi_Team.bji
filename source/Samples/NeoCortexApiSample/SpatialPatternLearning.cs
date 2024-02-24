@@ -226,6 +226,11 @@ namespace NeoCortexApiSample
 
                 Dictionary<int, double> allPermanenceDictionary = new Dictionary<int, double>();
 
+                foreach (var kvp in reconstructedPermanence)
+                {
+
+                }
+
             }
 
             Generate1DHeatmaps(heatmapData);
