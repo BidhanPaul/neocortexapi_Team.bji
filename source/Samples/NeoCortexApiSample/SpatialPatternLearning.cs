@@ -235,6 +235,7 @@ namespace NeoCortexApiSample
                     extendedDictionary[inputIndex] = probability;
 
                 }
+                for (int inputIndex = 0; inputIndex < maxInput; inputIndex++)
 
             }
 
