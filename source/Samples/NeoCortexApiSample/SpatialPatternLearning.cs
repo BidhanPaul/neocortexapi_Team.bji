@@ -220,9 +220,9 @@ namespace NeoCortexApiSample
 
                 var actCols = sp.Compute(inpSdr, false);
 
-                var probabilities = sp.Reconstruct(actCols);
+                Dictionary<int, double> reconstructedPermanence = sp.Reconstruct(actCols);
 
-                Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
+                int maxInput = 200;
 
                 Dictionary<int, double> allPermanenceDictionary = new Dictionary<int, double>();
 
@@ -232,17 +232,34 @@ namespace NeoCortexApiSample
                     double probability = kvp.Value;
 
 
-                    extendedDictionary[inputIndex] = probability;
+                    allPermanenceDictionary [inputIndex] = probability;
 
                 }
                
                 for (int inputIndex = 0; inputIndex < maxInput; inputIndex++)
                 {
+<<<<<<< HEAD
                     if (!reconstructedDictionary.ContainsKey(inputIndex))
                     {
 
                         allPermanenceDictionary[inputIndex] = 0.0;
                     }
+=======
+                    if (!allPermanenceDictionary.ContainsKey(inputIndex))
+                    {
+                        allPermanenceDictionary[inputIndex] = 0.0;
+                    }
+                    
+>>>>>>> cb1e4ceb7f2fe3d81237f4982d339d8f82d8c543
+                }
+
+                Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
+
+                Debug.WriteLine("All Permanence Dictionary:");
+
+                foreach (var kvp in allPermanenceDictionary)
+                {
+                    Debug.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
                 }
 
 
