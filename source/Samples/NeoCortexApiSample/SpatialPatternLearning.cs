@@ -224,6 +224,8 @@ namespace NeoCortexApiSample
 
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
 
+                int maxInput = 200;
+
                 Dictionary<int, double> allPermanenceDictionary = new Dictionary<int, double>();
 
                 foreach (var kvp in reconstructedPermanence)
