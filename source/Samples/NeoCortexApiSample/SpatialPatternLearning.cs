@@ -235,11 +235,16 @@ namespace NeoCortexApiSample
                     extendedDictionary[inputIndex] = probability;
 
                 }
+               
                 for (int inputIndex = 0; inputIndex < maxInput; inputIndex++)
                 {
                     if (!reconstructedDictionary.ContainsKey(inputIndex))
-                    
+                    {
+
+                        allPermanenceDictionary[inputIndex] = 0.0;
+                    }
                 }
+
 
 
             }
