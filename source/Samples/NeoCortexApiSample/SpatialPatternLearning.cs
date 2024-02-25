@@ -234,14 +234,18 @@ namespace NeoCortexApiSample
                     double probability = kvp.Value;
 
 
-                    extendedDictionary[inputIndex] = probability;
+                    allPermanenceDictionary [inputIndex] = probability;
 
                 }
                 for (int inputIndex = 0; inputIndex < maxInput; inputIndex++)
                 {
-                    if (!reconstructedDictionary.ContainsKey(inputIndex))
+                    if (!allPermanenceDictionary.ContainsKey(inputIndex))
+                    {
+                        allPermanenceDictionary[inputIndex] = 0.0;
+                    }
                     
                 }
+
 
 
             }
