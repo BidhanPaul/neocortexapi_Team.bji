@@ -222,8 +222,6 @@ namespace NeoCortexApiSample
 
                 Dictionary<int, double> reconstructedPermanence = sp.Reconstruct(actCols);
 
-                Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
-
                 int maxInput = 200;
 
                 Dictionary<int, double> allPermanenceDictionary = new Dictionary<int, double>();
@@ -246,6 +244,14 @@ namespace NeoCortexApiSample
                     
                 }
 
+                Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
+
+                Debug.WriteLine("All Permanence Dictionary:");
+
+                foreach (var kvp in allPermanenceDictionary)
+                {
+                    Debug.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
+                }
 
 
             }
