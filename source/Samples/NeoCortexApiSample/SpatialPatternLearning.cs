@@ -220,7 +220,7 @@ namespace NeoCortexApiSample
 
                 var actCols = sp.Compute(inpSdr, false);
 
-                var probabilities = sp.Reconstruct(actCols);
+                Dictionary<int, double> reconstructedPermanence = sp.Reconstruct(actCols);
 
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
 
