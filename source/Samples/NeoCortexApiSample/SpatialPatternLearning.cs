@@ -229,8 +229,8 @@ namespace NeoCortexApiSample
                 foreach (var kvp in reconstructedPermanence)
                 {
                     int inputIndex = kvp.Key;
-                    double probability = kvp.Value;
 
+                    double probability = kvp.Value;
 
                     allPermanenceDictionary [inputIndex] = probability;
 
@@ -238,19 +238,17 @@ namespace NeoCortexApiSample
                
                 for (int inputIndex = 0; inputIndex < maxInput; inputIndex++)
                 {
-<<<<<<< HEAD
-                    if (!reconstructedDictionary.ContainsKey(inputIndex))
+
+                    if (!reconstructedPermanence.ContainsKey(inputIndex))
                     {
 
                         allPermanenceDictionary[inputIndex] = 0.0;
                     }
-=======
+
                     if (!allPermanenceDictionary.ContainsKey(inputIndex))
                     {
                         allPermanenceDictionary[inputIndex] = 0.0;
                     }
-                    
->>>>>>> cb1e4ceb7f2fe3d81237f4982d339d8f82d8c543
                 }
 
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
@@ -261,9 +259,6 @@ namespace NeoCortexApiSample
                 {
                     Debug.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
                 }
-
-
-
             }
 
             Generate1DHeatmaps(heatmapData);
