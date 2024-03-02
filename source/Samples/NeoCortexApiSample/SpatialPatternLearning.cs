@@ -265,7 +265,7 @@ namespace NeoCortexApiSample
             Generate1DHeatmaps(heatmapData, normalizedPermanence);
         }
 
-        private void Generate1DHeatmaps(List<List<double>> heatmapData)
+        private void Generate1DHeatmaps(List<List<double>> heatmapData, List<int[]> normalizedPermanence)
         {
             int i = 1;
 
