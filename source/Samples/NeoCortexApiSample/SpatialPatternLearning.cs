@@ -214,6 +214,8 @@ namespace NeoCortexApiSample
         {
             List<List<double>> heatmapData = new List<List<double>>();
 
+            List<int[]> normalizedPermanence = new List<int[]>();
+
             foreach (var input in inputValues)
             {
                 var inpSdr = encoder.Encode(input);
@@ -242,11 +244,6 @@ namespace NeoCortexApiSample
                     if (!reconstructedPermanence.ContainsKey(inputIndex))
                     {
 
-                        allPermanenceDictionary[inputIndex] = 0.0;
-                    }
-
-                    if (!allPermanenceDictionary.ContainsKey(inputIndex))
-                    {
                         allPermanenceDictionary[inputIndex] = 0.0;
                     }
                 }
