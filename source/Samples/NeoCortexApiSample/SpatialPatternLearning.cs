@@ -258,6 +258,8 @@ namespace NeoCortexApiSample
 
                 List<int> normalizePermanenceList = Helpers.ThresholdingProbabilities(permanenceValuesList, ThresholdValue);
 
+                normalizedPermanence.Add(normalizePermanenceList.ToArray());
+
             }
 
             Generate1DHeatmaps(heatmapData);
