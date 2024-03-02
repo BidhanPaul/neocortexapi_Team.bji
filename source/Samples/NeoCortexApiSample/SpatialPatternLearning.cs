@@ -248,7 +248,8 @@ namespace NeoCortexApiSample
                     }
                 }
 
-                List<double> extendedProbabilities = allPermanenceDictionary.Values.ToList();
+                List<double> permanenceValuesList = allPermanenceDictionary.Values.ToList();
+                heatmapData.Add(permanenceValuesList);
 
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
 
