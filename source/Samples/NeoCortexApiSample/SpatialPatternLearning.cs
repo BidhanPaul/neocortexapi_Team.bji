@@ -249,9 +249,14 @@ namespace NeoCortexApiSample
                 }
 
                 List<double> permanenceValuesList = allPermanenceDictionary.Values.ToList();
+
                 heatmapData.Add(permanenceValuesList);
 
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
+
+                var ThresholdValue = 8.3;
+
+                List<int> normalizePermanenceList = Helpers.ThresholdingProbabilities(permanenceValuesList, ThresholdValue);
 
             }
 

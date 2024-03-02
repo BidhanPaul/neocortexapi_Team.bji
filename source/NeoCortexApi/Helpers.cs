@@ -609,27 +609,23 @@ namespace NeoCortexApi
 
         //Commemts wil be here
 
-        public static string ThresholdingProbabilities(IEnumerable<double> values, double threshold, string separator = ",")
+        public static List<int> ThresholdingProbabilities(IEnumerable<double> values, double threshold)
         {
             if (values == null)
             {
-                return "Null";
+                return null;
             }
-            StringBuilder result = new StringBuilder();
+
+            List<int> resultList = new List<int>();
 
             foreach (var numericValue in values)
             {
                 int thresholdedValue = (numericValue >= threshold) ? 1 : 0;
-                result.Append(thresholdedValue).Append(separator);
+
+                resultList.Add(thresholdedValue);
             }
 
-            // Remove the trailing separator
-            if (result.Length > 0)
-            {
-                result.Length--; // Remove the last character
-            }
-
-            return result.ToString();
+            return resultList;
         }
 
 
