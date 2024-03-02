@@ -269,15 +269,15 @@ namespace NeoCortexApiSample
         {
             int i = 1;
 
-            foreach (var probabilitiesList in heatmapData)
+            foreach (var values in heatmapData)
             {
                 string filePath = $"heatmap_{i}.png";
 
                 Debug.WriteLine($"FilePath: {filePath}");
                 
-                double[] probabilityCollectionArray = probabilitiesList.ToArray();
+                double[] heatmapValuesArray = values.ToArray();
                 //Have to pass the perameteres for heatmaps
-                NeoCortexUtils.Draw1DHeatmaps(new List<double[]>() { probabilityCollectionArray });
+                NeoCortexUtils.Draw1DHeatmaps(new List<double[]>() { heatmapValuesArray }, new List<int[]>() { normalizedPermanence[i - 1] });
 
                 Debug.WriteLine($"HeatMap Genarated Successfully");
 
