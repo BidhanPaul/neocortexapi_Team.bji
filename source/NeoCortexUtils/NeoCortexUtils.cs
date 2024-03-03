@@ -230,6 +230,8 @@ namespace NeoCortex
             }
             using (var font = new Font("Arial", 12))
             {
+                var normalizedArr = normalizedData[i];
+
 
             }
 
