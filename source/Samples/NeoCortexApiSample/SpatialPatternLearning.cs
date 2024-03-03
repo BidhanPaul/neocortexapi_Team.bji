@@ -277,7 +277,7 @@ namespace NeoCortexApiSample
                 
                 double[] heatmapValuesArray = values.ToArray();
                 //Have to pass the perameteres for heatmaps
-                NeoCortexUtils.Draw1DHeatmaps(new List<double[]>() { heatmapValuesArray }, new List<int[]>() { normalizedPermanence[i - 1] });
+                NeoCortexUtils.Draw1dHeatmap(new List<double[]>() { heatmapValuesArray }, new List<int[]>() { normalizedPermanence[i - 1] });
 
                 Debug.WriteLine($"HeatMap Genarated Successfully");
 

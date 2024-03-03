@@ -204,6 +204,18 @@ namespace NeoCortex
             myBitmap.Save(filePath, ImageFormat.Png);
         }
 
+        //Comments Will be Here
+        //
+        public static void Draw1dHeatmap(List<double[]> heatmapData, List<int[]> normalizedData, String filePath,
+            int bmpWidth = 1024,
+            int bmpHeight = 1024,
+            decimal redStart = 200, decimal yellowMiddle = 127, decimal greenStart = 20,
+            int enlargementFactor = 4)
+        {
+
+        }
+
+
 
         /// <summary>
         /// Drawas bitmaps from list of arrays.
