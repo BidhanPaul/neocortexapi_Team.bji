@@ -270,12 +270,14 @@ namespace NeoCortex
                     string normalizedLabel = "Normalized Permanence";
                     Font normalizedLabelFont = new Font("Arial", 10);
                     SizeF normalizedLabelSize = g.MeasureString(normalizedLabel, normalizedLabelFont);
-
-
+                    float normalizedLabelX = (targetWidth - normalizedLabelSize.Width) / 2;
+                    labelY += 20;
+                    labelY += 20;
+                    g.DrawString(normalizedLabel, normalizedLabelFont, Brushes.Black, new PointF(normalizedLabelX, labelY));
                 }
             }
 
-
+            myBitmap.Save(filePath, ImageFormat.Png);
         }
 
 
