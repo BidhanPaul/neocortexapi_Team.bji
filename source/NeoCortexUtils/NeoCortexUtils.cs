@@ -222,6 +222,7 @@ namespace NeoCortex
             int targetWidth = bmpWidth * enlargementFactor;
             int targetHeight = bmpHeight * enlargementFactor + 40;
 
+            System.Drawing.Bitmap myBitmap = new System.Drawing.Bitmap(targetWidth, targetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             using (Graphics g = Graphics.FromImage(myBitmap))
             {
                 g.Clear(Color.White);
@@ -236,6 +237,25 @@ namespace NeoCortex
                 var scaleX = (double)targetWidth / bmpWidth;
                 var scaleY = (double)(targetHeight - 40) / bmpHeight;
 
+                float labelY = 0;
+
+                for (int i = 0; i < height; i++)
+                {
+                    var heatmapArr = heatmapData[i];
+
+                    int w = heatmapArr.Length;
+
+                    for (int Xcount = 0; Xcount < w; Xcount++)
+                    {
+                        for (int padX = 0; padX < scaleX; padX++)
+                        {
+                            for (int padY = 0; padY < scaleY; padY++)
+                            {
+                                myBitmap.SetPixel((int)(i * scaleX) + (int)(Xcount * scaleX) + padX, (int)(padY) + (int)labelY, GetColor(redStart, yellowMiddle, greenStart, (Decimal)heatmapArr[Xcount]));
+                            }
+                        }
+                    }
+                }
 
                 using (var font = new Font("Arial", 12))
                 {
