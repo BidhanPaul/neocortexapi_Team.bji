@@ -213,6 +213,9 @@ namespace NeoCortex
             decimal redStart = 200, decimal yellowMiddle = 127, decimal greenStart = 20,
             int enlargementFactor = 4)
         {
+            int height = heatmapData.Count;
+            int maxLength = heatmapData.Max(arr => arr.Length);
+
             using (Graphics g = Graphics.FromImage(myBitmap))
             {
                 g.Clear(Color.White);
@@ -237,10 +240,6 @@ namespace NeoCortex
                         float textX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2) - 5;
                         float textY = (float)(bmpHeight * scaleY) + 25;
                         g.DrawString(formattedNumber, font, Brushes.Black, new PointF(textX, textY));
-
-
-
-
                     }
 
 
