@@ -219,6 +219,9 @@ namespace NeoCortex
             if (maxLength > bmpWidth || height > bmpHeight)
                 throw new ArgumentException("Size of all included arrays must be less than specified 'bmpWidth' and 'bmpHeight'");
 
+            int targetWidth = bmpWidth * enlargementFactor;
+            int targetHeight = bmpHeight * enlargementFactor + 40;
+
             using (Graphics g = Graphics.FromImage(myBitmap))
             {
                 g.Clear(Color.White);
