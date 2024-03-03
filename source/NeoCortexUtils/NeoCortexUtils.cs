@@ -234,6 +234,7 @@ namespace NeoCortex
                 for (int Xcount = 0; Xcount < normalizedArr.Length; Xcount++)
                 {
                     string formattedNumber = normalizedArr[Xcount].ToString();
+                    float textX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2) - 5;
                 }
 
 
