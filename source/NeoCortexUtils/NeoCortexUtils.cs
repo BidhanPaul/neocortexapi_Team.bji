@@ -216,6 +216,9 @@ namespace NeoCortex
             int height = heatmapData.Count;
             int maxLength = heatmapData.Max(arr => arr.Length);
 
+            if (maxLength > bmpWidth || height > bmpHeight)
+                throw new ArgumentException("Size of all included arrays must be less than specified 'bmpWidth' and 'bmpHeight'");
+
             using (Graphics g = Graphics.FromImage(myBitmap))
             {
                 g.Clear(Color.White);
