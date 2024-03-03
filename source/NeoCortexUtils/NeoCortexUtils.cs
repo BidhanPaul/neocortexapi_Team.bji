@@ -267,6 +267,9 @@ namespace NeoCortex
                         float textY = (float)(bmpHeight * scaleY) + 25;
                         g.DrawString(formattedNumber, font, Brushes.Black, new PointF(textX, textY));
                     }
+                    string normalizedLabel = "Normalized Permanence";
+                    Font normalizedLabelFont = new Font("Arial", 10);
+                    SizeF normalizedLabelSize = g.MeasureString(normalizedLabel, normalizedLabelFont);
 
 
                 }
