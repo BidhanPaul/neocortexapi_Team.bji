@@ -215,6 +215,9 @@ namespace NeoCortex
         {
             using (Graphics g = Graphics.FromImage(myBitmap))
             {
+                g.Clear(Color.White);
+                string title = "HeatMap Image";
+                Font titleFont = new Font("Arial", 7, FontStyle.Bold);
 
             }
 
