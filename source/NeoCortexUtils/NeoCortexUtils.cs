@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 using Daenet.ImageBinarizerLib;
 using Daenet.ImageBinarizerLib.Entities;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -212,6 +213,10 @@ namespace NeoCortex
             decimal redStart = 200, decimal yellowMiddle = 127, decimal greenStart = 20,
             int enlargementFactor = 4)
         {
+            using (Graphics g = Graphics.FromImage(myBitmap))
+            {
+
+            }
 
         }
 
