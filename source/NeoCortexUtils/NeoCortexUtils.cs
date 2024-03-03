@@ -228,6 +228,11 @@ namespace NeoCortex
                 var scaleY = (double)(targetHeight - 40) / bmpHeight;
 
             }
+            using (var font = new Font("Arial", 12))
+            {
+
+            }
+
 
         }
 
