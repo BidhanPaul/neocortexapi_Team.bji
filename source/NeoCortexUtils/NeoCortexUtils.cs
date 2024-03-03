@@ -233,7 +233,7 @@ namespace NeoCortex
                 var normalizedArr = normalizedData[i];
                 for (int Xcount = 0; Xcount < normalizedArr.Length; Xcount++)
                 {
-
+                    string formattedNumber = normalizedArr[Xcount].ToString();
                 }
 
 
