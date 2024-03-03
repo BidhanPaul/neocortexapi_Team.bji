@@ -219,6 +219,11 @@ namespace NeoCortex
                 string title = "HeatMap Image";
                 Font titleFont = new Font("Arial", 7, FontStyle.Bold);
 
+                SizeF titleSize = g.MeasureString(title, titleFont);
+                float titleX = (targetWidth - titleSize.Width) / 2;
+                float titleY = 10; // Move the title further up (adjust the value as needed)
+                g.DrawString(title, titleFont, Brushes.Black, new PointF(titleX, titleY));
+
             }
 
         }
