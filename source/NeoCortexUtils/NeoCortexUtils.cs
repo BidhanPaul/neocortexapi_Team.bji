@@ -227,18 +227,24 @@ namespace NeoCortex
                 var scaleX = (double)targetWidth / bmpWidth;
                 var scaleY = (double)(targetHeight - 40) / bmpHeight;
 
-            }
-            using (var font = new Font("Arial", 12))
-            {
-                var normalizedArr = normalizedData[i];
-                for (int Xcount = 0; Xcount < normalizedArr.Length; Xcount++)
+
+                using (var font = new Font("Arial", 12))
                 {
-                    string formattedNumber = normalizedArr[Xcount].ToString();
-                    float textX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2) - 5;
+                    var normalizedArr = normalizedData[i];
+                    for (int Xcount = 0; Xcount < normalizedArr.Length; Xcount++)
+                    {
+                        string formattedNumber = normalizedArr[Xcount].ToString();
+                        float textX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2) - 5;
+                        float textY = (float)(bmpHeight * scaleY) + 25;
+                        g.DrawString(formattedNumber, font, Brushes.Black, new PointF(textX, textY));
+
+
+
+
+                    }
+
+
                 }
-
-
-
             }
 
 
