@@ -231,6 +231,11 @@ namespace NeoCortex
             using (var font = new Font("Arial", 12))
             {
                 var normalizedArr = normalizedData[i];
+                for (int Xcount = 0; Xcount < normalizedArr.Length; Xcount++)
+                {
+
+                }
+
 
 
             }
