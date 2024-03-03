@@ -224,6 +224,9 @@ namespace NeoCortex
                 float titleY = 10; // Move the title further up (adjust the value as needed)
                 g.DrawString(title, titleFont, Brushes.Black, new PointF(titleX, titleY));
 
+                var scaleX = (double)targetWidth / bmpWidth;
+                var scaleY = (double)(targetHeight - 40) / bmpHeight;
+
             }
 
         }
