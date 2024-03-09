@@ -21,8 +21,19 @@ namespace UnitTestsProject
     {
         [TestMethod]
         [TestCategory("Prod")]
-        public void CellCompareTest()
+        public void Reconstruct_AddsKeyIfNotExists()
         {
+            var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
+            Connections mem = new Connections(cfg);
+            SpatialPoolerMT sp = new SpatialPoolerMT();
+            sp.Init(mem);
+            SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
+
+            int[] activeMiniColumns = new int[] { 1, 2, 3, 4, 5, 7, 20, 54, 700 };
+
+            Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
+
+
         }
 
     }
