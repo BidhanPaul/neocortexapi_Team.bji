@@ -52,6 +52,9 @@ namespace UnitTestsProject
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
             Assert.IsNotNull(permanences);
 
+            Assert.IsTrue(permanences.Keys.All(key => key is int));
+            Assert.IsTrue(permanences.Values.All(value => value is double));
+
 
         }
 
