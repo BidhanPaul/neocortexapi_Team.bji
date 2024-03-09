@@ -73,6 +73,18 @@ namespace UnitTestsProject
 
 
         }
+        private bool IsDictionaryInvalid(Dictionary<int, double> dictionary)
+        {
+
+
+            if (dictionary == null)
+            {
+                return true;
+            }
+
+
+        }
+
 
 
     }
