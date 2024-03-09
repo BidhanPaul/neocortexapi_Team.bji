@@ -53,6 +53,8 @@ namespace UnitTestsProject
 
             Assert.IsNotNull(permanences);
 
+            Assert.IsFalse(permanences.Values.Any(value => value < 0), "At least one permanence value should be negative");
+
 
         }
 
