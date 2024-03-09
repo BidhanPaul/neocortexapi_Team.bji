@@ -48,6 +48,11 @@ namespace UnitTestsProject
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
 
 
+            int[] activeMiniColumns = new int[] { 1, 2, 3 };
+            Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
+            Assert.IsNotNull(permanences);
+
+
         }
 
 
