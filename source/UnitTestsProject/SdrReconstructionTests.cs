@@ -65,6 +65,11 @@ namespace UnitTestsProject
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
+            int[] activeMiniColumns = new int[] { 1, 2, 3 };
+
+            Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
+            Assert.IsFalse(IsDictionaryInvalid(permanences), "Result should be false for an invalid dictionary");
+
 
 
         }
