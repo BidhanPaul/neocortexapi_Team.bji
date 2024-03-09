@@ -33,6 +33,10 @@ namespace UnitTestsProject
 
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
 
+            Assert.IsNotNull(permanences);
+
+            Assert.IsTrue(permanences.ContainsKey(1));
+
 
         }
 
