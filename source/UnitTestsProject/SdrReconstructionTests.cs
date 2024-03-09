@@ -81,6 +81,14 @@ namespace UnitTestsProject
             {
                 return true;
             }
+            
+            if (dictionary.Values.Any(value => double.IsNaN(value)) || dictionary.Keys.Any(key => key < 0))
+            {
+                return true;
+            }
+
+            return false;
+
 
 
         }
