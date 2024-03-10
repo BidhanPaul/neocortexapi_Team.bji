@@ -67,7 +67,10 @@ namespace UnitTestsProject
             Connections mem = new Connections(cfg);
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
+            SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
 
+
+            int[] activeMiniColumns = new int[] { 1, 2, 3, 4, 5 };
 
 
 
