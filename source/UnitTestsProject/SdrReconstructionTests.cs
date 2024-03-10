@@ -73,6 +73,11 @@ namespace UnitTestsProject
             int[] activeMiniColumns = new int[] { 1, 2, 3, 4, 5 };
 
 
+            Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
+
+            Assert.IsFalse(permanences.Values.Any(value => value < 0), "Result should be false due to negative permanence values");
+
+
 
 
         }
