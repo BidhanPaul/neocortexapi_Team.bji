@@ -59,6 +59,22 @@ namespace UnitTestsProject
         }
 
 
+        public void Reconstruct_NegativePermanences_ReturnsFalse()
+
+        {
+
+            var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
+            Connections mem = new Connections(cfg);
+            SpatialPoolerMT sp = new SpatialPoolerMT();
+            sp.Init(mem);
+
+
+
+
+
+        }
+
+
 
         public void Reconstruct_AtLeastOneNegativePermanence_ReturnsFalse()
         {
