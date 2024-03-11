@@ -20,6 +20,37 @@ namespace UnitTestsProject
     public class SdrReconstructionTests
     {
         [TestMethod]
+        [TestCategory("SpatialPoolerReconstruction")]
+        public void Reconstruct_ValidInput_ReturnsResult()
+        {
+            var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
+
+            Connections mem = new Connections(cfg);
+
+            SpatialPoolerMT sp = new SpatialPoolerMT();
+            sp.Init(mem);
+            SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
+
+            int[] activeMiniColumns = new int[] { 0, 7, 2, 12, 24, 29, 37, 39, 46 };
+
+            Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
+
+            
+            Assert.IsNotNull(permanences);
+            Assert.IsTrue(permanences.ContainsKey(0));
+            Assert.AreEqual(2.8, permanences[0], 5.0);
+            Assert.IsTrue(permanences.ContainsKey(1));
+            Assert.AreEqual(4.1, permanences[1], 5.5);
+            Assert.IsTrue(permanences.ContainsKey(2));
+            Assert.AreEqual(3.5, permanences[2], 4.0);
+            Assert.IsTrue(permanences.ContainsKey(3));
+            Assert.AreEqual(3.4, permanences[3], 7.0);
+            Assert.IsTrue(permanences.ContainsKey(4));
+            Assert.AreEqual(5.5, permanences[4], 4.5);
+            Assert.IsFalse(permanences.ContainsKey(101));
+        }
+
+        [TestMethod]
         [TestCategory("Prod")]
         public void Reconstruct_AddsKeyIfNotExists()
         {

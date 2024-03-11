@@ -274,10 +274,12 @@ namespace NeoCortex
                     labelY += 20;
                     labelY += 20;
                     g.DrawString(normalizedLabel, normalizedLabelFont, Brushes.Black, new PointF(normalizedLabelX, labelY));
+
+
                 }
             }
 
-            myBitmap.Save(filePath, ImageFormat.Png);
+
         }
 
 
