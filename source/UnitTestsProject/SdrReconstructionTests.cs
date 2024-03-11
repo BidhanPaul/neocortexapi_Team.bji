@@ -23,7 +23,7 @@ namespace UnitTestsProject
         [TestCategory("SpatialPoolerReconstruction")]
         public void Reconstruct_ValidInput_ReturnsResult()
         {
-            var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
+            var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
 
             Connections mem = new Connections(cfg);
 
@@ -62,10 +62,29 @@ namespace UnitTestsProject
         }
 
         [TestMethod]
+        [TestCategory("ReconstructionEdgeCases")]
+        public void Reconstruct_EmptyInput_ReturnsEmptyResult()
+        {
+            
+            var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
+            Connections mem = new Connections(cfg);
+            SpatialPoolerMT sp = new SpatialPoolerMT();
+            sp.Init(mem);
+            SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
+
+            
+            Dictionary<int, double> permanences = reconstructor.Reconstruct(new int[0]);
+
+            
+            Assert.IsNotNull(permanences);
+            Assert.AreEqual(0, permanences.Count);
+        }
+
+        [TestMethod]
         [TestCategory("ReconstructionAddingKey If not Exist")]
         public void Reconstruct_AddsKeyIfNotExists()
         {
-            var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
+            var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
             Connections mem = new Connections(cfg);
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
@@ -83,7 +102,7 @@ namespace UnitTestsProject
         }
         public void Reconstruct_ReturnsValidDictionary()
         {
-            var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
+            var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
             Connections mem = new Connections(cfg);
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
@@ -105,7 +124,7 @@ namespace UnitTestsProject
 
         {
 
-            var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
+            var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
             Connections mem = new Connections(cfg);
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
@@ -118,10 +137,6 @@ namespace UnitTestsProject
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
 
             Assert.IsFalse(permanences.Values.Any(value => value < 0), "Result should be false due to negative permanence values");
-
-
-
-
         }
 
 
