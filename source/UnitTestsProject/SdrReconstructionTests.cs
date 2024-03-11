@@ -19,8 +19,8 @@ namespace UnitTestsProject
     [TestClass]
     public class SdrReconstructionTests
     {
-        [TestMethod]
         [TestCategory("SpatialPoolerReconstruction")]
+        [TestMethod]
         public void Reconstruct_ValidInput_ReturnsResult()
         {
             var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
@@ -50,8 +50,8 @@ namespace UnitTestsProject
             Assert.IsFalse(permanences.ContainsKey(101));
         }
 
-        [TestMethod]
         [TestCategory("ReconstructionExceptionHandling")]
+        [TestMethod]
         public void Reconstruct_NullInput_ThrowsArgumentNullException()
         {
             var connections = new Connections();
@@ -60,9 +60,9 @@ namespace UnitTestsProject
             reconstructor.Reconstruct(null);
 
         }
-
-        [TestMethod]
+        
         [TestCategory("ReconstructionEdgeCases")]
+        [TestMethod]
         public void Reconstruct_EmptyInput_ReturnsEmptyResult()
         {
             
@@ -78,6 +78,28 @@ namespace UnitTestsProject
             
             Assert.IsNotNull(permanences);
             Assert.AreEqual(0, permanences.Count);
+        }
+
+        [TestCategory("ReconstructionPositiveValues")]
+        [TestMethod]
+        public void Reconstruct_AllPositivePermanences_ReturnsExpectedValues()
+        {
+            var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
+            Connections mem = new Connections(cfg);
+            SpatialPoolerMT sp = new SpatialPoolerMT();
+            sp.Init(mem);
+            SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
+
+            int[] activeMiniColumns = new int[] { 1, 2, 3, 4, 5 };
+
+            Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
+
+            Assert.IsNotNull(permanences);
+
+            foreach (var value in permanences.Values)
+            {
+                Assert.IsTrue(value >= 0, $"Expected positive value, but got {value}");
+            }
         }
 
         [TestMethod]
