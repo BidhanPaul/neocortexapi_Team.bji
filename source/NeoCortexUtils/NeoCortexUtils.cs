@@ -208,10 +208,10 @@ namespace NeoCortex
         //Comments Will be Here
         //
         public static void Draw1dHeatmap(List<double[]> heatmapData, List<int[]> normalizedData, String filePath,
-            int bmpWidth = 1024,
-            int bmpHeight = 1024,
-            decimal redStart = 200, decimal yellowMiddle = 127, decimal greenStart = 20,
-            int enlargementFactor = 4)
+        int bmpWidth = 1024,
+        int bmpHeight = 1024,
+        decimal redStart = 200, decimal yellowMiddle = 127, decimal greenStart = 20,
+        int enlargementFactor = 4)
         {
             int height = heatmapData.Count;
             int maxLength = heatmapData.Max(arr => arr.Length);
@@ -219,26 +219,32 @@ namespace NeoCortex
             if (maxLength > bmpWidth || height > bmpHeight)
                 throw new ArgumentException("Size of all included arrays must be less than specified 'bmpWidth' and 'bmpHeight'");
 
+            // Calculate target width and height based on the enlargement factor
             int targetWidth = bmpWidth * enlargementFactor;
-            int targetHeight = bmpHeight * enlargementFactor + 40;
+            int targetHeight = bmpHeight * enlargementFactor + 40; // Include space for the title and labels
 
+            // Create a new bitmap for the heatmap and text row with white background
             System.Drawing.Bitmap myBitmap = new System.Drawing.Bitmap(targetWidth, targetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             using (Graphics g = Graphics.FromImage(myBitmap))
             {
-                g.Clear(Color.White);
-                string title = "HeatMap Image";
-                Font titleFont = new Font("Arial", 7, FontStyle.Bold);
+                g.Clear(Color.LightSkyBlue); // Set the background color to white
 
+                // Draw title
+                string title = "HeatMap Image";
+                Font titleFont = new Font("Arial", 12);
                 SizeF titleSize = g.MeasureString(title, titleFont);
                 float titleX = (targetWidth - titleSize.Width) / 2;
-                float titleY = 10; // Move the title further up (adjust the value as needed)
+                float titleY = 0; // Move the title further up (adjust the value as needed)
                 g.DrawString(title, titleFont, Brushes.Black, new PointF(titleX, titleY));
 
+                // Calculate scale factors for width and height based on the target dimensions
                 var scaleX = (double)targetWidth / bmpWidth;
-                var scaleY = (double)(targetHeight - 40) / bmpHeight;
+                var scaleY = (double)(targetHeight - 40) / bmpHeight; // Exclude the space for the title and labels from scaleY
 
-                float labelY = 0;
+                // Leave a gap between sections
+                float labelY = 20;
 
+                // Draw heatmap
                 for (int i = 0; i < height; i++)
                 {
                     var heatmapArr = heatmapData[i];
@@ -255,31 +261,38 @@ namespace NeoCortex
                             }
                         }
                     }
+                    // Draw normalized representation below the heatmap
+                    using (var font = new Font("Arial", 12))
+                    {
+                        var normalizedArr = normalizedData[i];
+                        for (int Xcount = 0; Xcount < normalizedArr.Length; Xcount++)
+                        {
+                            string formattedNumber = normalizedArr[Xcount].ToString(); // Format the integer as string
+                            float textX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2) - 5; // Adjusted position for top middle
+                            float textY = (float)(bmpHeight * scaleY) + 25; // Adjusted vertical position for label
+                            g.DrawString(formattedNumber, font, Brushes.Black, new PointF(textX, textY));
+
+                            // Draw a line from the top middle of the number to the corresponding heatmap pixel
+                            float lineStartX = textX + 5; // Adjusted starting point for the line
+                            float lineStartY = textY - 20; // Adjusted starting point for the line
+                            float lineEndX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2);
+                            float lineEndY = 90;
+                            g.DrawLine(Pens.Black, lineStartX, lineStartY, lineEndX, lineEndY);
+
+                        }
+                        string normalizedLabel = "Normalized Permanence";
+                        Font normalizedLabelFont = new Font("Arial", 10);
+                        SizeF normalizedLabelSize = g.MeasureString(normalizedLabel, normalizedLabelFont);
+                        float normalizedLabelX = (targetWidth - normalizedLabelSize.Width) / 2;
+                        labelY += 30; // Leave a gap before drawing the label
+                        labelY += 20; // Adjust the vertical position down by 10 units (you can modify this value)
+                        g.DrawString(normalizedLabel, normalizedLabelFont, Brushes.Black, new PointF(normalizedLabelX, labelY));
+                    }
                 }
-
-                //using (var font = new Font("Arial", 12))
-                //{
-                //    var normalizedArr = normalizedData[i];
-                //    for (int Xcount = 0; Xcount < normalizedArr.Length; Xcount++)
-                //    {
-                //        string formattedNumber = normalizedArr[Xcount].ToString();
-                //        float textX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2) - 5;
-                //        float textY = (float)(bmpHeight * scaleY) + 25;
-                //        g.DrawString(formattedNumber, font, Brushes.Black, new PointF(textX, textY));
-                //    }
-                //    string normalizedLabel = "Normalized Permanence";
-                //    Font normalizedLabelFont = new Font("Arial", 10);
-                //    SizeF normalizedLabelSize = g.MeasureString(normalizedLabel, normalizedLabelFont);
-                //    float normalizedLabelX = (targetWidth - normalizedLabelSize.Width) / 2;
-                //    labelY += 20;
-                //    labelY += 20;
-                //    g.DrawString(normalizedLabel, normalizedLabelFont, Brushes.Black, new PointF(normalizedLabelX, labelY));
-
-
-                //}
             }
 
-
+            // Save the combined image with heatmap and text row
+            myBitmap.Save(filePath, ImageFormat.Png);
         }
 
 

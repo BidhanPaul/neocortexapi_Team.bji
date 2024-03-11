@@ -262,32 +262,32 @@ namespace NeoCortexApiSample
 
             }
 
-            //Generate1DHeatmaps(heatmapData, normalizedPermanence);
+            Generate1DHeatmaps(heatmapData, normalizedPermanence);
         }
 
-        //private void Generate1DHeatmaps(List<List<double>> heatmapData, List<int[]> normalizedPermanence)
-        //{
-        //    int i = 1;
+        private void Generate1DHeatmaps(List<List<double>> heatmapData, List<int[]> normalizedPermanence)
+        {
+            int i = 1;
 
-        //    foreach (var values in heatmapData)
-        //    {
-        //        string filePath = $"heatmap_{i}.png";
+            foreach (var values in heatmapData)
+            {
+                string filePath = $"heatmap_{i}.png";
 
-        //        Debug.WriteLine($"FilePath: {filePath}");
+                Debug.WriteLine($"FilePath: {filePath}");
 
-        //        double[] heatmapValuesArray = values.ToArray();
-        //        //Have to pass the perameteres for heatmaps
-        //        NeoCortexUtils.Draw1dHeatmap(new List<double[]>() { heatmapValuesArray }, new List<int[]>() { normalizedPermanence[i - 1] });
+                double[] heatmapValuesArray = values.ToArray();
+                //Have to pass the perameteres for heatmaps
+                NeoCortexUtils.Draw1dHeatmap(new List<double[]>() { heatmapValuesArray }, new List<int[]>() { normalizedPermanence[i - 1] });
 
-        //        Debug.WriteLine($"HeatMap Genarated Successfully");
+                Debug.WriteLine($"HeatMap Genarated Successfully");
 
-        //        i++;
+                i++;
 
-        //        // Generating heatmap
-        //    }
+                // Generating heatmap
+            }
 
 
-        //}
+        }
 
     }
 }
