@@ -82,7 +82,7 @@ namespace NeoCortexApi
         /// <summary>
         /// Used during the deserialization proicess.
         /// </summary>
-        public HomeostaticPlasticityController(System.GCMemoryInfo mem)
+        public HomeostaticPlasticityController()
         {
 
         }

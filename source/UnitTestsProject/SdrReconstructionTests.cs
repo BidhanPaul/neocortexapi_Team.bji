@@ -13,9 +13,6 @@ using System.Diagnostics;
 
 namespace UnitTestsProject
 {
-    /// <summary>
-    /// UnitTests for the Cell.
-    /// </summary>
     [TestClass]
     public class SdrReconstructionTests
     {
@@ -52,6 +49,7 @@ namespace UnitTestsProject
 
         [TestCategory("ReconstructionExceptionHandling")]
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Reconstruct_NullInput_ThrowsArgumentNullException()
         {
             var connections = new Connections();
@@ -80,7 +78,7 @@ namespace UnitTestsProject
             Assert.AreEqual(0, permanences.Count);
         }
 
-        [TestCategory("ReconstructionPositiveValues")]
+        [TestCategory("ReconstructionAllPositiveValues")]
         [TestMethod]
         public void Reconstruct_AllPositivePermanences_ReturnsExpectedValues()
         {
@@ -102,8 +100,8 @@ namespace UnitTestsProject
             }
         }
 
-        [TestMethod]
         [TestCategory("ReconstructionAddingKey If not Exist")]
+        [TestMethod]
         public void Reconstruct_AddsKeyIfNotExists()
         {
             var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
@@ -122,6 +120,8 @@ namespace UnitTestsProject
 
 
         }
+        [TestCategory("ReconstructionReturnsKvP")]
+        [TestMethod]
         public void Reconstruct_ReturnsValidDictionary()
         {
             var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
@@ -141,7 +141,8 @@ namespace UnitTestsProject
 
         }
 
-
+        [TestCategory("ReconstructedNegativePermanenceRetunsFalse")]
+        [TestMethod]
         public void Reconstruct_NegativePermanences_ReturnsFalse()
 
         {
@@ -162,11 +163,12 @@ namespace UnitTestsProject
         }
 
 
-
+        [TestCategory("ReconstructedNegativePermanenceRetunsFalse")]
+        [TestMethod]
         public void Reconstruct_AtLeastOneNegativePermanence_ReturnsFalse()
         {
 
-            var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
+            var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
             Connections mem = new Connections(cfg);
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
@@ -181,6 +183,9 @@ namespace UnitTestsProject
 
 
         }
+
+        [TestCategory("DataIntegrityValidation")]
+        [TestMethod]
         public void Reconstruct_InvalidDictionary_ReturnsFalse()
         {
 
@@ -197,6 +202,8 @@ namespace UnitTestsProject
 
 
         }
+        [TestCategory("DictionaryValidityTests")]
+        [TestMethod]
         private bool IsDictionaryInvalid(Dictionary<int, double> dictionary)
         {
 
@@ -212,12 +219,7 @@ namespace UnitTestsProject
             }
 
             return false;
-
-
-
         }
-
-
 
     }
 }

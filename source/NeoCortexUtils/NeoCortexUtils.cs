@@ -257,26 +257,26 @@ namespace NeoCortex
                     }
                 }
 
-                using (var font = new Font("Arial", 12))
-                {
-                    var normalizedArr = normalizedData[i];
-                    for (int Xcount = 0; Xcount < normalizedArr.Length; Xcount++)
-                    {
-                        string formattedNumber = normalizedArr[Xcount].ToString();
-                        float textX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2) - 5;
-                        float textY = (float)(bmpHeight * scaleY) + 25;
-                        g.DrawString(formattedNumber, font, Brushes.Black, new PointF(textX, textY));
-                    }
-                    string normalizedLabel = "Normalized Permanence";
-                    Font normalizedLabelFont = new Font("Arial", 10);
-                    SizeF normalizedLabelSize = g.MeasureString(normalizedLabel, normalizedLabelFont);
-                    float normalizedLabelX = (targetWidth - normalizedLabelSize.Width) / 2;
-                    labelY += 20;
-                    labelY += 20;
-                    g.DrawString(normalizedLabel, normalizedLabelFont, Brushes.Black, new PointF(normalizedLabelX, labelY));
+                //using (var font = new Font("Arial", 12))
+                //{
+                //    var normalizedArr = normalizedData[i];
+                //    for (int Xcount = 0; Xcount < normalizedArr.Length; Xcount++)
+                //    {
+                //        string formattedNumber = normalizedArr[Xcount].ToString();
+                //        float textX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2) - 5;
+                //        float textY = (float)(bmpHeight * scaleY) + 25;
+                //        g.DrawString(formattedNumber, font, Brushes.Black, new PointF(textX, textY));
+                //    }
+                //    string normalizedLabel = "Normalized Permanence";
+                //    Font normalizedLabelFont = new Font("Arial", 10);
+                //    SizeF normalizedLabelSize = g.MeasureString(normalizedLabel, normalizedLabelFont);
+                //    float normalizedLabelX = (targetWidth - normalizedLabelSize.Width) / 2;
+                //    labelY += 20;
+                //    labelY += 20;
+                //    g.DrawString(normalizedLabel, normalizedLabelFont, Brushes.Black, new PointF(normalizedLabelX, labelY));
 
 
-                }
+                //}
             }
 
 
