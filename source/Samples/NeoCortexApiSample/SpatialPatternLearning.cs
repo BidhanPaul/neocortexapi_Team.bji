@@ -210,24 +210,57 @@ namespace NeoCortexApiSample
             return sp;
         }
 
+        /// <summary>
+        /// Executes an experiment to analyze and visualize the behavior of a Spatial Pooler (SP) in response to a sequence of encoded input values. 
+        /// This method systematically encodes each input value into a Sparse Distributed Representation (SDR) using the specified encoder, 
+        /// then processes these SDRs through the SP to identify active columns. It reconstructs permanence values for these active columns, 
+        /// normalizes them against a predefined threshold, and aggregates this data to generate visual heatmaps. These heatmaps illustrate 
+        /// how the SP's internal representations of inputs evolve over time, enabling a deeper understanding of its learning and memory processes.
+        /// Additionally, the method assesses the SP's ability to adapt its synaptic connections (permanences) in response to the inputs, 
+        /// thereby effectively 'training' the SP through exposure to the dataset. The experiment aims to shed light on the dynamics of synaptic 
+        /// plasticity within the SP framework, offering insights that could guide the tuning of its parameters for improved performance in specific tasks.
+        /// </summary>
+        /// <param name="sp">The Spatial Pooler instance to be used for the experiment. It processes input SDRs to simulate neural activity and synaptic plasticity.</param>
+        /// <param name="encoder">The encoder used for converting raw input values into SDRs. The quality of encoding directly influences the SP's performance and the experiment's outcomes.</param>
+        /// <param name="inputValues">A list of input values to be encoded and processed through the SP. These values serve as the experimental dataset, exposing the SP to various patterns and contexts.</param>
+        /// <returns>The trained version of the SP after it has been exposed to all input values and adjusted its synaptic connections accordingly. This trained SP is expected to have refined its internal representations and synaptic efficiencies, making it better suited for processing similar inputs in the future.</returns>
+        /// <remarks>
+        /// The method assumes the SP and encoder are properly initialized and configured before being passed as arguments. The 'cfg' parameter, 
+        /// mentioned in the context but not present in the provided code, is presumed to contain configuration settings for the SP and encoder, 
+        /// possibly including parameters such as learning rates, permanence thresholds, and encoder-specific settings. Adjusting these configurations 
+        /// could significantly impact the experiment's outcomes by altering the SP's learning dynamics and the quality of input representations.
+        /// </remarks>
+
+
+
+        // Define a method to run the restructuring experiment, which takes a spatial pooler, an encoder, and a list of input values as arguments.
         private void RunRustructuringExperiment(SpatialPooler sp, EncoderBase encoder, List<double> inputValues)
         {
+            // Initialize a list to get heatmap data for all input values.
             List<List<double>> heatmapData = new List<List<double>>();
 
+            // Initialize a list to get normalized permanence values.
             List<int[]> normalizedPermanence = new List<int[]>();
 
+           // Loop through each input value in the list of input values.
             foreach (var input in inputValues)
             {
+                // Encode the current input value using the provided encoder, resulting in an SDR
                 var inpSdr = encoder.Encode(input);
 
+                // Compute the active columns in the spatial pooler for the given input SDR, without learning.
                 var actCols = sp.Compute(inpSdr, false);
 
+                // Reconstruct the permanence values for the active columns.
                 Dictionary<int, double> reconstructedPermanence = sp.Reconstruct(actCols);
 
+                // Define the maximum number of inputs to consider.
                 int maxInput = 200;
 
+                // Initialize a dictionary to hold all permanence values, including those not directly reconstructed.
                 Dictionary<int, double> allPermanenceDictionary = new Dictionary<int, double>();
 
+                // Populate the all permanence dictionary with reconstructed permanence values.
                 foreach (var kvp in reconstructedPermanence)
                 {
                     int inputIndex = kvp.Key;
@@ -237,7 +270,7 @@ namespace NeoCortexApiSample
                     allPermanenceDictionary [inputIndex] = probability;
 
                 }
-               
+                // Ensure that all input indices up to the maximum are represented in the dictionary, even if their permanence is 0.
                 for (int inputIndex = 0; inputIndex < maxInput; inputIndex++)
                 {
 
@@ -247,21 +280,25 @@ namespace NeoCortexApiSample
                         allPermanenceDictionary[inputIndex] = 0.0;
                     }
                 }
-
+                // Convert the dictionary of all permanences to a list and add it to the heatmap data.
                 List<double> permanenceValuesList = allPermanenceDictionary.Values.ToList();
 
                 heatmapData.Add(permanenceValuesList);
 
+                // Output debug information showing the input value and its corresponding SDR as a string.
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
 
+                // Define a threshold value for normalizing permanences.
                 var ThresholdValue = 8.3;
 
+                // Normalize permanences based on the threshold value and convert them to a list of integers.
                 List<int> normalizePermanenceList = Helpers.ThresholdingProbabilities(permanenceValuesList, ThresholdValue);
-
+               
+                // Add the normalized permanences to the list of all normalized permanences.
                 normalizedPermanence.Add(normalizePermanenceList.ToArray());
 
             }
-
+            // Generate 1D heatmaps using the heatmap data and the normalized permanences.
             Generate1DHeatmaps(heatmapData, normalizedPermanence);
         }
 
@@ -275,6 +312,7 @@ namespace NeoCortexApiSample
 
                 Debug.WriteLine($"FilePath: {filePath}");
 
+                // Add the normalized permanences to the list of all normalized permanences.
                 double[] heatmapValuesArray = values.ToArray();
                 //Have to pass the perameteres for heatmaps
                 NeoCortexUtils.Draw1dHeatmap(new List<double[]>() { heatmapValuesArray }, new List<int[]>() { normalizedPermanence[i - 1] });
