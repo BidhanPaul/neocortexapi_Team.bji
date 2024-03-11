@@ -62,7 +62,7 @@ namespace UnitTestsProject
         }
 
         [TestMethod]
-        [TestCategory("Prod")]
+        [TestCategory("ReconstructionAddingKey If not Exist")]
         public void Reconstruct_AddsKeyIfNotExists()
         {
             var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
