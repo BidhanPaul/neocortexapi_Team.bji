@@ -51,6 +51,17 @@ namespace UnitTestsProject
         }
 
         [TestMethod]
+        [TestCategory("ReconstructionExceptionHandling")]
+        public void Reconstruct_NullInput_ThrowsArgumentNullException()
+        {
+            var connections = new Connections();
+            var reconstructor = new SPSdrReconstructor(connections);
+
+            reconstructor.Reconstruct(null);
+
+        }
+
+        [TestMethod]
         [TestCategory("Prod")]
         public void Reconstruct_AddsKeyIfNotExists()
         {

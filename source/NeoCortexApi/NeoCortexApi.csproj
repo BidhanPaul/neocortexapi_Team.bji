@@ -55,7 +55,6 @@
     <Compile Remove="Encoders\EncoderBuilder.cs" />
     <Compile Remove="HtmSerializer2.cs" />
     <Compile Remove="Network\NearestClassifier.cs" />
-    <Compile Remove="SPSdrReconstructor.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -74,7 +73,6 @@
       <PackagePath></PackagePath>
     </None>
     <None Include="Network\NearestClassifier.cs" />
-    <None Include="SPSdrReconstructor.cs" />
   </ItemGroup>
 
   <ItemGroup>
