@@ -212,8 +212,8 @@ namespace NeoCortexApiSample
 
         /// <summary>
         /// Executes an experiment to analyze and visualize the behavior of a Spatial Pooler (SP) in response to a sequence of encoded input values. 
-        /// This method systematically encodes each input value into a Sparse Distributed Representation (SDR) using the specified encoder, 
-        /// then processes these SDRs through the SP to identify active columns. It reconstructs permanence values for these active columns, 
+        /// This method systematically encodes each input value into a Sparse Distributed Representation (SDR) using the specified encoder (Scaler Encoder), 
+        /// then processes these SDRs through the SP (Saptial Pooler Algorithm) to identify active columns. It reconstructs permanence values for these active columns, 
         /// normalizes them against a predefined threshold, and aggregates this data to generate visual heatmaps. These heatmaps illustrate 
         /// how the SP's internal representations of inputs evolve over time, enabling a deeper understanding of its learning and memory processes.
         /// Additionally, the method assesses the SP's ability to adapt its synaptic connections (permanences) in response to the inputs, 
@@ -223,12 +223,17 @@ namespace NeoCortexApiSample
         /// <param name="sp">The Spatial Pooler instance to be used for the experiment. It processes input SDRs to simulate neural activity and synaptic plasticity.</param>
         /// <param name="encoder">The encoder used for converting raw input values into SDRs. The quality of encoding directly influences the SP's performance and the experiment's outcomes.</param>
         /// <param name="inputValues">A list of input values to be encoded and processed through the SP. These values serve as the experimental dataset, exposing the SP to various patterns and contexts.</param>
-        /// <returns>The trained version of the SP after it has been exposed to all input values and adjusted its synaptic connections accordingly. This trained SP is expected to have refined its internal representations and synaptic efficiencies, making it better suited for processing similar inputs in the future.</returns>
         /// <remarks>
-        /// The method assumes the SP and encoder are properly initialized and configured before being passed as arguments. The 'cfg' parameter, 
-        /// mentioned in the context but not present in the provided code, is presumed to contain configuration settings for the SP and encoder, 
-        /// possibly including parameters such as learning rates, permanence thresholds, and encoder-specific settings. Adjusting these configurations 
-        /// could significantly impact the experiment's outcomes by altering the SP's learning dynamics and the quality of input representations.
+        /// <para>The "maxInput" is the Maximum number of inputs to consider for reconstruction according to the size of Encoded Inputs.</para>
+        /// <para>The "thresholdValue" is Threshold value for permanence normalization to convert them as 0 and 1 Like the encoded Inputs.</para>
+        /// <para>Initializes lists to store heatmap data and normalized permanence values.</para>
+        /// <para>Iterates over each input value, encoding it, computing active columns, and reconstructing permanence values.</para>
+        /// <para>Populates a dictionary with all reconstructed permanence values and ensures representation up to a maximum input index.</para>
+        /// <para>Converts permanence values to a list and adds it to the heatmap data.</para>
+        /// <para>Outputs debug information about input values and corresponding Sparse Distributed Representation (SDR).</para>
+        /// <para>Defines a threshold for permanence normalization and normalizes permanences based on this threshold.</para>
+        /// <para>Adds normalized permanences to a list.</para>
+        /// <para>Calls a method to generate 1D heatmaps using the heatmap data and normalized permanences.</para>
         /// </remarks>
 
 
@@ -257,7 +262,7 @@ namespace NeoCortexApiSample
                 // Define the maximum number of inputs to consider.
                 int maxInput = 200;
 
-                // Initialize a dictionary to hold all permanence values, including those not directly reconstructed.
+                // Initialize a dictionary to hold all permanence values, including those not reconstructed becuase of Inactive columns.
                 Dictionary<int, double> allPermanenceDictionary = new Dictionary<int, double>();
 
                 // Populate the all permanence dictionary with reconstructed permanence values.
@@ -288,17 +293,17 @@ namespace NeoCortexApiSample
                 // Output debug information showing the input value and its corresponding SDR as a string.
                 Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
 
-                // Define a threshold value for normalizing permanences.
+                // Define a threshold value for normalizing permanences, this value provides best Reconstructed Input
                 var ThresholdValue = 8.3;
 
-                // Normalize permanences based on the threshold value and convert them to a list of integers.
+                // Normalize permanences (0 and 1) based on the threshold value and convert them to a list of integers.
                 List<int> normalizePermanenceList = Helpers.ThresholdingProbabilities(permanenceValuesList, ThresholdValue);
                
                 // Add the normalized permanences to the list of all normalized permanences.
                 normalizedPermanence.Add(normalizePermanenceList.ToArray());
 
             }
-            // Generate 1D heatmaps using the heatmap data and the normalized permanences.
+            // Generate 1D heatmaps using the heatmap data and the normalized permanences To plot Heatmap and Normalize Image combined.
             Generate1DHeatmaps(heatmapData, normalizedPermanence);
         }
 
