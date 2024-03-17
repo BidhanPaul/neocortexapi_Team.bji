@@ -197,6 +197,13 @@ namespace UnitTestsProject
             int[] activeMiniColumns = new int[] { 1, 2, 3 };
 
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
+
+            // Debug trace for reconstructed permanences
+            Debug.WriteLine("Reconstructed Permanences:");
+            foreach (var kvp in permanences)
+            {
+                Debug.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
+            }
             Assert.IsFalse(IsDictionaryInvalid(permanences), "Result should be false for an invalid dictionary");
 
 
