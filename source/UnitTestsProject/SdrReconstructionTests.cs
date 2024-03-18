@@ -9,6 +9,8 @@ using NeoCortexApi.Entities;
 using System.Net.Http.Headers;
 using Naa = NeoCortexApi.NeuralAssociationAlgorithm;
 using System.Diagnostics;
+using NeoCortexEntities.NeuroVisualizer;
+using Newtonsoft.Json.Linq;
 
 
 namespace UnitTestsProject
@@ -120,22 +122,48 @@ namespace UnitTestsProject
 
 
         }
+
+        /// <summary>
+        /// Tests the behavior of SPSdrReconstructor's Reconstruct method to ensure it returns a valid dictionary.
+        /// </summary>
+
+
         [TestCategory("ReconstructionReturnsKvP")]
         [TestMethod]
         public void Reconstruct_ReturnsValidDictionary()
         {
+            // Get HTM configuration
             var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
+
+            // Initialize Connections object
             Connections mem = new Connections(cfg);
+
+            
+            // Initialize SpatialPoolerMT object
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
+
+            // Initialize SPSdrReconstructor object
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
 
-
+           
+            // Define active mini-columns array
             int[] activeMiniColumns = new int[] { 1, 2, 3 };
+
+
+            // Reconstruct permanences for active mini-columns
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
+
+
+            // Assert that the returned dictionary is not null
             Assert.IsNotNull(permanences);
 
+
+            // Assert that all keys in the dictionary are of type int
             Assert.IsTrue(permanences.Keys.All(key => key is int));
+
+
+            / Assert that all values in the dictionary are of type double
             Assert.IsTrue(permanences.Values.All(value => value is double));
 
 
