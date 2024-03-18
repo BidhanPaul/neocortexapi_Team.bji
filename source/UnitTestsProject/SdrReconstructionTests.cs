@@ -32,7 +32,7 @@ namespace UnitTestsProject
 
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
 
-            
+
             Assert.IsNotNull(permanences);
             Assert.IsTrue(permanences.ContainsKey(0));
             Assert.AreEqual(2.8, permanences[0], 5.0);
@@ -58,22 +58,22 @@ namespace UnitTestsProject
             reconstructor.Reconstruct(null);
 
         }
-        
+
         [TestCategory("ReconstructionEdgeCases")]
         [TestMethod]
         public void Reconstruct_EmptyInput_ReturnsEmptyResult()
         {
-            
+
             var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
             Connections mem = new Connections(cfg);
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
 
-            
+
             Dictionary<int, double> permanences = reconstructor.Reconstruct(new int[0]);
 
-            
+
             Assert.IsNotNull(permanences);
             Assert.AreEqual(0, permanences.Count);
         }
@@ -189,12 +189,12 @@ namespace UnitTestsProject
         public void Reconstruct_InvalidDictionary_ReturnsFalse()
         {
 
-            var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
+            var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
             Connections mem = new Connections(cfg);
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
-            int[] activeMiniColumns = new int[] { 1, 2, 3 };
+            int[] activeMiniColumns = new int[] { 1, 2, 3, 4, 84 };
 
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
 
@@ -219,7 +219,7 @@ namespace UnitTestsProject
             {
                 return true;
             }
-            
+
             if (dictionary.Values.Any(value => double.IsNaN(value)) || dictionary.Keys.Any(key => key < 0))
             {
                 return true;
