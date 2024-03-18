@@ -7,6 +7,7 @@ using NeoCortexApi.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace NeoCortexApiSample
@@ -313,23 +314,30 @@ namespace NeoCortexApiSample
 
             foreach (var values in heatmapData)
             {
-                string filePath = $"heatmap_{i}.png";
+                // Define the folder path from current Directory
+                string folderPath = Path.Combine(Environment.CurrentDirectory, "1DHeatMap");
 
+                // Create the folder if it doesn't exist
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                // Define the file path with the folder path
+                string filePath = Path.Combine(folderPath, $"heatmap_{i}.png");
+                //Debugging the Filepath
                 Debug.WriteLine($"FilePath: {filePath}");
 
-                // Add the normalized permanences to the list of all normalized permanences.
-                double[] heatmapValuesArray = values.ToArray();
-                //Have to pass the perameteres for heatmaps
-                NeoCortexUtils.Draw1dHeatmap(new List<double[]>() { heatmapValuesArray }, new List<int[]>() { normalizedPermanence[i - 1] });
+                // Convert the probabilitiesList to a 1D array using ToArray
+                double[] array1D = values.ToArray();
 
-                Debug.WriteLine($"HeatMap Genarated Successfully");
+                // Call the Draw1DHeatmap function with the dynamically generated file path
+                NeoCortexUtils.Draw1dHeatmap(new List<double[]>() { array1D }, new List<int[]>() { normalizedPermanence[i - 1] }, filePath, 200, 8, 9, 4, 0, 30);
 
+                //Debugging the Message
+                Debug.WriteLine("Heatmap generated and saved successfully.");
                 i++;
-
-                // Generating heatmap
             }
-
-
         }
 
     }
