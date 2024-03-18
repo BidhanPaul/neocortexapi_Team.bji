@@ -141,24 +141,36 @@ namespace UnitTestsProject
 
         }
 
+        /// <summary>
+        /// Tests the behavior of SPSdrReconstructor's Reconstruct method when negative permanences are encountered.
+        /// </summary>
+        /// 
+
         [TestCategory("ReconstructedNegativePermanenceRetunsFalse")]
         [TestMethod]
         public void Reconstruct_NegativePermanences_ReturnsFalse()
 
         {
-
+            // Get HTM configuration
             var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
+
+            // Initialize Connections object
             Connections mem = new Connections(cfg);
+
+            // Initialize SpatialPoolerMT object
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
+
+            // Initialize SPSdrReconstructor object
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
 
-
+            // Define active mini-columns array
             int[] activeMiniColumns = new int[] { 1, 2, 3, 4, 5 };
 
-
+            // Reconstruct permanences for active mini-columns
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
 
+            // Assert that no negative permanences are present in the reconstructed values
             Assert.IsFalse(permanences.Values.Any(value => value < 0), "Result should be false due to negative permanence values");
         }
         /// <summary>
