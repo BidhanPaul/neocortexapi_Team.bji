@@ -18,22 +18,33 @@ namespace UnitTestsProject
     [TestClass]
     public class SdrReconstructionTests
     {
+        /// <summary>
+        /// Test Case Summary:
+        /// This test verifies the behavior of the Reconstruct method in the SPSdrReconstructor class under valid input conditions.
+        /// It ensures that the method returns a dictionary containing keys for all provided active mini-columns, with corresponding permanence values.
+        /// Additionally, it confirms that the method properly handles the case where a key is not present in the dictionary.
+        /// </summary>
+
         [TestCategory("SpatialPoolerReconstruction")]
         [TestMethod]
         public void Reconstruct_ValidInput_ReturnsResult()
         {
+            // Get HTM configuration
             var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
-
+            // Create connections object with the specified configuration.
             Connections mem = new Connections(cfg);
-
+            // Initialize a SpatialPoolerMT instance.
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
+            // Create an instance of SPSdrReconstructor with the connections.
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
-
+            // Define active mini-columns.
             int[] activeMiniColumns = new int[] { 0, 7, 2, 12, 24, 29, 37, 39, 46 };
-
+            // Call the Reconstruct method with the defined scenario.
+            // Reconstruct the permanence values for the active columns.
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
 
+            // Verify whether the dictionary returned by the Reconstruct method contains the expected keys and values.
 
             Assert.IsNotNull(permanences);
             Assert.IsTrue(permanences.ContainsKey(0));
@@ -46,21 +57,33 @@ namespace UnitTestsProject
             Assert.AreEqual(3.4, permanences[3], 7.0);
             Assert.IsTrue(permanences.ContainsKey(4));
             Assert.AreEqual(5.5, permanences[4], 4.5);
+            // Validate whether a specific key is not present in the dictionary.
             Assert.IsFalse(permanences.ContainsKey(101));
         }
 
+        /// <summary>
+        /// Test Case Summary:
+        /// This test verifies that the Reconstruct method in the SPSdrReconstructor class correctly throws an ArgumentNullException
+        /// when invoked with a null input parameter.
+        /// </summary>
         [TestCategory("ReconstructionExceptionHandling")]
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Reconstruct_NullInput_ThrowsArgumentNullException()
         {
+            // Test setup
             var connections = new Connections();
             var reconstructor = new SPSdrReconstructor(connections);
 
+            // Execution
             reconstructor.Reconstruct(null);
 
         }
 
+        /// <summary>
+        /// Test Case Summary:
+        /// This test checked that the Reconstruct method in the SPSdrReconstructor class returns an empty dictionary 
+        /// </summary>
         [TestCategory("ReconstructionEdgeCases")]
         [TestMethod]
         public void Reconstruct_EmptyInput_ReturnsEmptyResult()
@@ -79,19 +102,26 @@ namespace UnitTestsProject
             Assert.IsNotNull(permanences);
             Assert.AreEqual(0, permanences.Count);
         }
-
+        /// <summary>
+        /// This test falls under the category of "ReconstructionAllPositiveValues" and ensures that the Reconstruct method handles
+        /// a scenario where all mini-column indices provided as input are positive integers. The test checks whether the returned 
+        /// permanence values are all non-negative, as expected.
+        /// </summary>
         [TestCategory("ReconstructionAllPositiveValues")]
         [TestMethod]
         public void Reconstruct_AllPositivePermanences_ReturnsExpectedValues()
         {
+            // Get HTM configuration
             var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
+            // Initialize Connections object
             Connections mem = new Connections(cfg);
+            // Initialize SpatialPoolerMT object
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
-
+            // Define active mini-columns array
             int[] activeMiniColumns = new int[] { 1, 2, 3, 4, 5 };
-
+            // Reconstruct permanences for active mini-columns
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
 
             Assert.IsNotNull(permanences);
@@ -160,7 +190,7 @@ namespace UnitTestsProject
             // Initialize Connections object
             Connections mem = new Connections(cfg);
 
-            
+
             // Initialize SpatialPoolerMT object
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
@@ -168,7 +198,7 @@ namespace UnitTestsProject
             // Initialize SPSdrReconstructor object
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
 
-           
+
             // Define active mini-columns array
             int[] activeMiniColumns = new int[] { 1, 2, 3 };
 
@@ -185,10 +215,8 @@ namespace UnitTestsProject
             Assert.IsTrue(permanences.Keys.All(key => key is int));
 
 
-            / Assert that all values in the dictionary are of type double
+            // Assert that all values in the dictionary are of type double
             Assert.IsTrue(permanences.Values.All(value => value is double));
-
-
         }
 
         /// <summary>
@@ -262,7 +290,7 @@ namespace UnitTestsProject
         {
 
             // Initialize spatial pooler configuration and connections
-            var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
+            var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
 
             Connections mem = new Connections(cfg);
             SpatialPoolerMT sp = new SpatialPoolerMT();
@@ -294,7 +322,7 @@ namespace UnitTestsProject
         /// </summary>
         /// <param name="dictionary">The dictionary to be checked.</param>
         /// <returns>True if the dictionary is invalid, otherwise false.</returns>
-        
+
         [TestCategory("DictionaryValidityTests")]
         [TestMethod]
         private bool IsDictionaryInvalid(Dictionary<int, double> dictionary)
