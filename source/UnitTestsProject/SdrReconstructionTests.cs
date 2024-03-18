@@ -161,41 +161,54 @@ namespace UnitTestsProject
 
             Assert.IsFalse(permanences.Values.Any(value => value < 0), "Result should be false due to negative permanence values");
         }
-
-
+        /// <summary>
+        /// Tests the behavior of reconstructing permanences when at least one permanence value is negative.
+        /// The test initializes a spatial pooler configuration and connections, then reconstructs permanences using a set of active mini-columns.
+        /// It checks if the resulting dictionary of permanences contains any negative values, and asserts that at least one permanence value should be negative.
+        /// </summary>
         [TestCategory("ReconstructedNegativePermanenceRetunsFalse")]
         [TestMethod]
         public void Reconstruct_AtLeastOneNegativePermanence_ReturnsFalse()
         {
-
+            // Initialize spatial pooler configuration and connections
             var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
             Connections mem = new Connections(cfg);
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
+            // Initialize SPSdrReconstructor for reconstructing permanences
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
+            // Define a set of active mini-columns
             int[] activeMiniColumns = new int[] { 1, 2, 3, 4, 5 };
 
+            // Reconstruct permanences based on the active mini-columns
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
-
+            // Assert that the reconstructed dictionary is not null
             Assert.IsNotNull(permanences);
-
+            // Assert that at least one permanence value is negative
             Assert.IsFalse(permanences.Values.Any(value => value < 0), "At least one permanence value should be negative");
 
 
         }
-
+        /// <summary>
+        /// Tests the behavior of reconstructing permanences when provided with an invalid dictionary.
+        /// The test initializes a spatial pooler configuration and connections, then reconstructs permanences using a set of active mini-columns.
+        /// It checks if the resulting dictionary of permanences is considered invalid, and asserts that the result should be false for an invalid dictionary.
+        /// </summary>
         [TestCategory("DataIntegrityValidation")]
         [TestMethod]
         public void Reconstruct_InvalidDictionary_ReturnsFalse()
         {
-
+            // Initialize spatial pooler configuration and connections
             var cfg = UnitTestHelpers.GetHtmConfig(100, 1024);
             Connections mem = new Connections(cfg);
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
+            // Initialize SPSdrReconstructor for reconstructing permanences
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
+            // Define a set of active mini-columns
             int[] activeMiniColumns = new int[] { 1, 2, 3 };
 
+            // Reconstruct permanences based on the active mini-columns
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
 
             // Debug trace for reconstructed permanences
@@ -204,22 +217,31 @@ namespace UnitTestsProject
             {
                 Debug.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
             }
+            // Assert that the reconstructed dictionary is not considered invalid
             Assert.IsFalse(IsDictionaryInvalid(permanences), "Result should be false for an invalid dictionary");
 
 
 
         }
+        /// <summary>
+        /// Determines whether a dictionary is considered invalid based on specific criteria.
+        /// </summary>
+        /// <param name="dictionary">The dictionary to be checked.</param>
+        /// <returns>True if the dictionary is invalid, otherwise false.</returns>
+        
         [TestCategory("DictionaryValidityTests")]
         [TestMethod]
         private bool IsDictionaryInvalid(Dictionary<int, double> dictionary)
         {
-
-
+            // Check if the dictionary reference is null, indicating invalidity.
             if (dictionary == null)
             {
                 return true;
             }
-            
+            // Check for invalid values or keys in the dictionary.
+            // Values containing NaN (Not-a-Number) are considered invalid.
+            // Additionally, any keys less than 0 are also considered invalid.
+
             if (dictionary.Values.Any(value => double.IsNaN(value)) || dictionary.Keys.Any(key => key < 0))
             {
                 return true;
