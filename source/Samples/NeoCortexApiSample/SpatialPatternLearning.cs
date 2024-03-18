@@ -46,10 +46,10 @@ namespace NeoCortexApiSample
                 PotentialRadius = (int)(0.15 * inputBits),
                 LocalAreaDensity = -1,
                 ActivationThreshold = 10,
-                
+
                 MaxSynapsesPerSegment = (int)(0.01 * numColumns),
                 Random = new ThreadSafeRandom(42),
-                StimulusThreshold=10,
+                StimulusThreshold = 10,
             };
 
             double max = 100;
@@ -85,7 +85,7 @@ namespace NeoCortexApiSample
             RunRustructuringExperiment(sp, encoder, inputValues);
         }
 
-       
+
 
         /// <summary>
         /// Implements the experiment.
@@ -247,7 +247,7 @@ namespace NeoCortexApiSample
             // Initialize a list to get normalized permanence values.
             List<int[]> normalizedPermanence = new List<int[]>();
 
-           // Loop through each input value in the list of input values.
+            // Loop through each input value in the list of input values.
             foreach (var input in inputValues)
             {
                 // Encode the current input value using the provided encoder, resulting in an SDR
@@ -272,7 +272,7 @@ namespace NeoCortexApiSample
 
                     double probability = kvp.Value;
 
-                    allPermanenceDictionary [inputIndex] = probability;
+                    allPermanenceDictionary[inputIndex] = probability;
 
                 }
                 // Ensure that all input indices up to the maximum are represented in the dictionary, even if their permanence is 0.
@@ -298,7 +298,7 @@ namespace NeoCortexApiSample
 
                 // Normalize permanences (0 and 1) based on the threshold value and convert them to a list of integers.
                 List<int> normalizePermanenceList = Helpers.ThresholdingProbabilities(permanenceValuesList, ThresholdValue);
-               
+
                 // Add the normalized permanences to the list of all normalized permanences.
                 normalizedPermanence.Add(normalizePermanenceList.ToArray());
 
