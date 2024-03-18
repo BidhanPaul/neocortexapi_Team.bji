@@ -308,6 +308,11 @@ namespace NeoCortexApiSample
             Generate1DHeatmaps(heatmapData, normalizedPermanence);
         }
 
+        /// <summary>
+        /// Generates 1D heatmaps based on the provided heatmap data and normalized permanence values (Combined Image), and saves them to local Drive.
+        /// </summary>
+        /// <param name="heatmapData">A list containing the heatmap data for each input value.</param>
+        /// <param name="normalizedPermanence">A list containing the normalized permanence values for each input value.</param>
         private void Generate1DHeatmaps(List<List<double>> heatmapData, List<int[]> normalizedPermanence)
         {
             int i = 1;
@@ -328,7 +333,7 @@ namespace NeoCortexApiSample
                 //Debugging the Filepath
                 Debug.WriteLine($"FilePath: {filePath}");
 
-                // Convert the probabilitiesList to a 1D array using ToArray
+                // Convert the Values to a 1D array using ToArray
                 double[] array1D = values.ToArray();
 
                 // Call the Draw1DHeatmap function with the dynamically generated file path
