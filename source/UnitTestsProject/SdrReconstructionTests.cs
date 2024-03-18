@@ -102,22 +102,44 @@ namespace UnitTestsProject
             }
         }
 
+        /// <summary>
+        /// Tests whether SPSdrReconstructor's Reconstruct method adds a key to the dictionary if it doesn't already exist.
+        /// </summary>
+        /// 
         [TestCategory("ReconstructionAddingKey If not Exist")]
         [TestMethod]
         public void Reconstruct_AddsKeyIfNotExists()
         {
+            // Get HTM configuration
             var cfg = UnitTestHelpers.GetHtmConfig(200, 1024);
+
+
+            // Initialize Connections object
             Connections mem = new Connections(cfg);
+
+
+            // Initialize SpatialPoolerMT object
             SpatialPoolerMT sp = new SpatialPoolerMT();
             sp.Init(mem);
+
+
+            // Initialize SPSdrReconstructor object
             SPSdrReconstructor reconstructor = new SPSdrReconstructor(mem);
 
+
+            // Define active mini-columns array
             int[] activeMiniColumns = new int[] { 1, 2, 3, 4, 5, 7, 20, 54, 700 };
 
+
+            // Reconstruct permanences for active mini-columns
             Dictionary<int, double> permanences = reconstructor.Reconstruct(activeMiniColumns);
 
+
+            // Assert that the returned dictionary is not null
             Assert.IsNotNull(permanences);
 
+
+            // Assert that the dictionary contains the key 1
             Assert.IsTrue(permanences.ContainsKey(1));
 
 
