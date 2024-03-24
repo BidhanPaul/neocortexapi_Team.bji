@@ -44,7 +44,7 @@ namespace NeoCortexApi
                 rnd = new Random();
 
             if (activeBits <= 0)
-                activeBits = numOfBits/2;
+                activeBits = numOfBits / 2;
 
 
             int[] vector = new int[numOfBits];
@@ -59,7 +59,7 @@ namespace NeoCortexApi
                         vector[index] = 1;
                         break;
                     }
-                }                
+                }
             }
 
             return vector;
@@ -73,7 +73,7 @@ namespace NeoCortexApi
         /// <see cref=""/>
         /// <param name="sdrs">the SDR sets</param>
         /// <returns>string of traced output SDRs</returns>
-        public static string StringifySdr(List<int[]> sdrs, string separator = " | " )
+        public static string StringifySdr(List<int[]> sdrs, string separator = " | ")
         {
             //List of string of arrays for SDR set
             var heads = new List<int>(new int[sdrs.Count]);
@@ -552,7 +552,7 @@ namespace NeoCortexApi
         /// <param name="population"></param>
         /// <returns>Cpnnetced cells from the population.</returns>
         public static List<Cell> GetDistalConnectedCells(Cell cell, IList<Cell> population)
-        {          
+        {
             List<Cell> connectedCells = new List<Cell>();
 
             var populationSynapses = population.SelectMany(c => c.DistalDendrites.SelectMany(s => s.Synapses)).ToList();
@@ -607,7 +607,15 @@ namespace NeoCortexApi
             return result.ToString();
         }
 
-        //Commemts wil be here
+
+
+        /// <summary>
+        /// Thresholds a collection of Reconstruced Permanence values based on a given threshold.
+        /// </summary>
+        /// <param name="values">The collection of probability values to be thresholded.</param>
+        /// <param name="threshold">The threshold value used for thresholding.</param>
+        /// <returns>A list of binary values (0 or 1) representing the thresholded probabilities.</returns>
+
 
         public static List<int> ThresholdingProbabilities(IEnumerable<double> values, double threshold)
         {
