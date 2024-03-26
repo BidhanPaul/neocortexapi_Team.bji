@@ -410,12 +410,23 @@ namespace NeoCortex
             myBitmap.Save(filePath, ImageFormat.Png);
         }
 
+        /// <summary>
+        /// Draws a combined similarity plot based on the given list of similarity values.
+        /// </summary>
+        /// <param name="similarities">The list of similarity values to be plotted.</param>
+        /// <param name="filePath">The file path where the plot image will be saved.</param>
+        /// <remarks>
+        /// The plot includes bars representing similarity values, indexed from left to right. Each bar's height corresponds to its similarity value.
+        /// Axis labels, a title, a scale indicating similarity values, and text indicating the similarity range are added to the plot.
+        /// </remarks>
 
         public static void DrawCombinedSimilarityPlot(List<double> similarities, string filePath)
         {
             // Determine the size of the plot
-            int width = 1200; // Increased width for more space
-            int height = 800; // Increased height for more space
+            // width of the Image
+            int width = 1200;
+            //height of the Image
+            int height = 800;
 
             // Create a new bitmap
             Bitmap bitmap = new Bitmap(width, height);
@@ -430,11 +441,13 @@ namespace NeoCortex
                 double maxSimilarity = similarities.Max();
 
                 // Calculate the maximum bar height based on the plot height and scale
-                int maxBarHeight = height - 200; // Adjusted for title position
+                // Adjusted for title position
+                int maxBarHeight = height - 200;
 
                 // Determine the number of bars and adjust the bar width accordingly
                 int barCount = similarities.Count;
-                int barWidth = (int)((width - 200) / (1.5 * barCount)); // Adjusted bar width
+                // Adjusted bar width
+                int barWidth = (int)((width - 200) / (1.5 * barCount));
 
                 // Define the width of the scale
                 int scaleWidth = 100;
@@ -446,9 +459,12 @@ namespace NeoCortex
                     int barHeight = (int)(similarities[i] / maxSimilarity * maxBarHeight);
 
                     // Determine the position and size of the bar
-                    int x = scaleWidth + 100 + i * (barWidth + 5); // Adjusted x position and spacing between bars
-                    int y = height - barHeight - 100; // Adjusted for title position and space at the bottom for labels
-                    int w = barWidth - 1; // Subtracting 1 to leave a small gap between bars
+                    // Adjusted x position and spacing between bars
+                    int x = scaleWidth + 100 + i * (barWidth + 5);
+                    // Adjusted for title position and space at the bottom for labels
+                    int y = height - barHeight - 100;
+                    // Subtracting 1 to leave a small gap between bars
+                    int w = barWidth - 1;
 
                     // Determine the color based on the similarity level
                     Color color = GetColorForSimilarity(similarities[i]);
@@ -460,35 +476,48 @@ namespace NeoCortex
                     graphics.FillRectangle(brush, x, y, w, barHeight);
 
                     // Add labels for each bar
-                    string label = similarities[i].ToString("0.00"); // Format the similarity value
-                    Font font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold); // Larger and bold font
+                    // Format the similarity value
+                    string label = similarities[i].ToString("0.00");
+                    // Larger and bold font
+                    Font font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold);
                     SizeF labelSize = graphics.MeasureString(label, font);
-                    graphics.DrawString(label, font, Brushes.Black, x + (barWidth - labelSize.Width) / 2, y - 20); // Draw the label above the bar
-                    graphics.DrawString($"Input {i + 1}", font, Brushes.Black, x + (barWidth - labelSize.Width) / 2, height - 50); // Draw input label below the bar
+                    // Draw the label above the bar
+                    graphics.DrawString(label, font, Brushes.Black, x + (barWidth - labelSize.Width) / 2, y - 20);
+                    // Draw input label below the bar
+                    graphics.DrawString($"Input {i + 1}", font, Brushes.Black, x + (barWidth - labelSize.Width) / 2, height - 50);
                 }
 
                 // Add axis labels
-                Font axisFont = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold); // Larger and bold font for axis labels
+                // Larger and bold font for axis labels
+                Font axisFont = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
                 graphics.DrawString("Index", axisFont, Brushes.Black, scaleWidth + (width - scaleWidth) / 2, height - 20);
                 // Add a title
                 string title = "Similarity Graph";
-                Font titleFont = new Font(FontFamily.GenericSansSerif, 18, FontStyle.Bold); // Larger and bold font for title
+                // Larger and bold font for title
+                Font titleFont = new Font(FontFamily.GenericSansSerif, 18, FontStyle.Bold);
                 SizeF titleSize = graphics.MeasureString(title, titleFont);
-                graphics.DrawString(title, titleFont, Brushes.Black, (width - titleSize.Width) / 2, 20); // Adjusted title position
+                // Adjusted title position
+                graphics.DrawString(title, titleFont, Brushes.Black, (width - titleSize.Width) / 2, 20);
 
                 // Add a scale indicating values from 0 to 1
-                Font scaleFont = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold); // Larger and bold font for scale
-                for (int i = 0; i <= 10; i++) // Draw 11 tick marks
+                // Larger and bold font for scale
+                Font scaleFont = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
+                // Draw 11 tick marks
+                for (int i = 0; i <= 10; i++)
                 {
                     double value = i / 10.0;
-                    int y = (int)((1 - value) * maxBarHeight) + 100; // Invert value and map to plot height
-                    graphics.DrawLine(Pens.Black, scaleWidth - 10, y, scaleWidth, y); // Draw tick mark
-                    graphics.DrawString(value.ToString("0.0"), scaleFont, Brushes.Black, 0, y - 8); // Draw value label
+                    // Invert value and map to plot height
+                    int y = (int)((1 - value) * maxBarHeight) + 100;
+                    // Draw tick mark
+                    graphics.DrawLine(Pens.Black, scaleWidth - 10, y, scaleWidth, y);
+                    // Draw value label
+                    graphics.DrawString(value.ToString("0.0"), scaleFont, Brushes.Black, 0, y - 8);
                 }
 
                 // Add text indicating the similarity test
                 string similarityText = "Similarity Range";
-                Font similarityFont = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold); // Larger and bold font for similarity text
+                // Larger and bold font for similarity text
+                Font similarityFont = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
                 SizeF similaritySize = graphics.MeasureString(similarityText, similarityFont);
                 graphics.DrawString(similarityText, similarityFont, Brushes.Black, 50, height / 2 - similaritySize.Height / 2, new StringFormat { FormatFlags = StringFormatFlags.DirectionVertical });
 
@@ -498,11 +527,19 @@ namespace NeoCortex
             bitmap.Save(filePath, ImageFormat.Png);
         }
 
+        /// <summary>
+        /// Determines the color based on the given similarity level.
+        /// </summary>
+        /// <param name="similarity">The similarity level to determine the color for (range: 0 to 1).</param>
+        /// <returns>The color corresponding to the similarity level, ranging from light gray to dark orange.</returns>
+
         private static Color GetColorForSimilarity(double similarity)
         {
             // Define the color range
-            int minColorValue = 100; // Light gray
-            int maxColorValue = 255; // Dark orange
+            // Light gray
+            int minColorValue = 100;
+            // Dark orange
+            int maxColorValue = 255;
 
             // Map the similarity value to the color range
             int colorValue = (int)(minColorValue + (maxColorValue - minColorValue) * similarity);
@@ -511,7 +548,8 @@ namespace NeoCortex
             colorValue = Math.Max(minColorValue, Math.Min(maxColorValue, colorValue));
 
             // Create a color with the determined value
-            return Color.FromArgb(colorValue, colorValue / 2, 0); // Orange gradient
+            // Orange gradient
+            return Color.FromArgb(colorValue, colorValue / 2, 0);
         }
 
         private static Color GetColor(decimal redStartVal, decimal yellowStartVal, decimal greenStartVal, decimal val)
@@ -603,6 +641,29 @@ namespace NeoCortex
                 rgb[i] = (int)Math.Round((decimal)diff * ratio) + baseVal;
             }
             return rgb;
+        }
+
+        /// <summary>
+        /// Determines the color of a bar based on the given similarity level.
+        /// </summary>
+        /// <param name="similarity">The similarity level to determine the color for.</param>
+        /// <returns>The color corresponding to the similarity level.</returns>
+
+        private static Color GetBarColor(double similarity)
+        {
+            // Assign color based on similarity level
+            // High similarity (90% or higher)
+            if (similarity >= 0.9)
+                return Color.DarkOrange;
+            // Medium similarity (70% or higher)
+            else if (similarity >= 0.7)
+                return Color.Orange;
+            // Low similarity (50% or higher)
+            else if (similarity >= 0.5)
+                return Color.LightSalmon;
+            // Very low similarity (below 50%)
+            else
+                return Color.LightGray;
         }
 
         /// <summary>
