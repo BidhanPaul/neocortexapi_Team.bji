@@ -210,6 +210,7 @@ namespace NeoCortex
         /// </summary>
         /// <param name="heatmapData">List of arrays representing the heatmap data.</param>
         /// <param name="normalizedData">List of arrays representing normalized data below the heatmap.</param>
+        /// <param name="encodedData">List of arrays of original Encoded data encoded by the scaler encoder.</param>
         /// <param name="filePath">Output image path for saving the combined image.</param>
         /// <param name="bmpWidth">Width of the heatmap bitmap (default is 1024).</param>
         /// <param name="bmpHeight">Height of the heatmap bitmap (default is 1024).</param>
@@ -217,7 +218,7 @@ namespace NeoCortex
         /// <param name="yellowMiddle">Threshold for values between which pixels are yellow (default is 127).</param>
         /// <param name="greenStart">Threshold for values below which pixels are green (default is 20).</param>
         /// <param name="enlargementFactor">Factor by which the image is enlarged for better visualization (default is 4).</param>
-        public static void Draw1dHeatmap(List<double[]> heatmapData, List<int[]> normalizedData, String filePath,
+        public static void Draw1dHeatmap(List<double[]> heatmapData, List<int[]> normalizedData, List<int[]> encodedData, String filePath,
         int bmpWidth = 1024,
         int bmpHeight = 1024,
         decimal redStart = 200, decimal yellowMiddle = 127, decimal greenStart = 20,
@@ -231,28 +232,32 @@ namespace NeoCortex
 
             // Calculate target width and height based on the enlargement factor
             int targetWidth = bmpWidth * enlargementFactor;
-            int targetHeight = bmpHeight * enlargementFactor + 40; // Include space for the title and labels
+            // Include space for the title and labels
+            int targetHeight = bmpHeight * enlargementFactor + 40;
 
             // Create a new bitmap for the heatmap and text row with background
             System.Drawing.Bitmap myBitmap = new System.Drawing.Bitmap(targetWidth, targetHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             using (Graphics g = Graphics.FromImage(myBitmap))
             {
-                g.Clear(Color.LightSkyBlue); // Set the background color to LightSkyBlue
+                // Set the background color to LightSkyBlue
+                g.Clear(Color.LightSkyBlue);
 
                 // Draw title
                 string title = "HeatMap Image";
                 Font titleFont = new Font("Arial", 12);
                 SizeF titleSize = g.MeasureString(title, titleFont);
                 float titleX = (targetWidth - titleSize.Width) / 2;
-                float titleY = 0; // Move the title further up (adjust the value as needed)
+                // Move the title further up (adjust the value as needed)
+                float titleY = 0;
                 g.DrawString(title, titleFont, Brushes.Black, new PointF(titleX, titleY));
 
                 // Calculate scale factors for width and height based on the target dimensions
                 var scaleX = (double)targetWidth / bmpWidth;
-                var scaleY = (double)(targetHeight - 40) / bmpHeight; // Exclude the space for the title and labels from scaleY
+                // Exclude the space for the title and labels from scaleY
+                var scaleY = (double)(targetHeight - 40) / bmpHeight;
 
                 // Leave a gap between sections
-                float labelY = 20;
+                float labelY = 30;
 
                 // Draw heatmap
                 for (int i = 0; i < height; i++)
@@ -274,29 +279,68 @@ namespace NeoCortex
                     // Draw normalized representation below the heatmap
                     using (var font = new Font("Arial", 12))
                     {
-                        var normalizedArr = normalizedData[i];
-                        for (int Xcount = 0; Xcount < normalizedArr.Length; Xcount++)
-                        {
-                            string formattedNumber = normalizedArr[Xcount].ToString(); // Format the integer as string
-                            float textX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2) - 5; // Adjusted position for top middle
-                            float textY = (float)(bmpHeight * scaleY) + 25; // Adjusted vertical position for label
-                            g.DrawString(formattedNumber, font, Brushes.Black, new PointF(textX, textY));
-
-                            // Draw a line from the top middle of the number to the corresponding heatmap pixel
-                            float lineStartX = textX + 5; // Adjusted starting point for the line
-                            float lineStartY = textY - 20; // Adjusted starting point for the line
-                            float lineEndX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2);
-                            float lineEndY = 90;
-                            g.DrawLine(Pens.Black, lineStartX, lineStartY, lineEndX, lineEndY);
-
-                        }
-                        string normalizedLabel = "Normalized Permanence";
+                        string normalizedLabel = "Normalized Permanence (Reconstructed Inputs)";
                         Font normalizedLabelFont = new Font("Arial", 10);
                         SizeF normalizedLabelSize = g.MeasureString(normalizedLabel, normalizedLabelFont);
                         float normalizedLabelX = (targetWidth - normalizedLabelSize.Width) / 2;
-                        labelY += 30; // Leave a gap before drawing the label
-                        labelY += 20; // Adjust the vertical position down by 10 units (you can modify this value)
+                        // Leave a gap before drawing the label
+                        labelY += 130;
+                        // Adjust the vertical position down by 10 units (you can modify this value)
+                        labelY += 70;
                         g.DrawString(normalizedLabel, normalizedLabelFont, Brushes.Black, new PointF(normalizedLabelX, labelY));
+
+                        var normalizedArr = normalizedData[i];
+                        for (int Xcount = 0; Xcount < normalizedArr.Length; Xcount++)
+                        {
+                            // Format the integer as string
+                            string formattedNumber = normalizedArr[Xcount].ToString();
+                            // Adjusted position for top middle
+                            float textX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2) - 5;
+                            // Adjusted vertical position for label
+                            float textY = (float)(bmpHeight * scaleY) + 25;
+                            g.DrawString(formattedNumber, font, Brushes.Black, new PointF(textX, textY));
+
+                            // Draw a line from the top middle of the number to the corresponding heatmap pixel
+                            // Adjusted starting point for the line
+                            float lineStartX = textX + 5;
+                            // Adjusted starting point for the line
+                            float lineStartY = textY - 20;
+                            float lineEndX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2);
+                            float lineEndY = 300;
+                            g.DrawLine(Pens.Black, lineStartX, lineStartY, lineEndX, lineEndY);
+
+                        }
+                        // Draw the label for encoded values
+                        string encodedLabel = "Encoded Inputs";
+                        Font encodedLabelFont = new Font("Arial", 10);
+                        SizeF encodedLabelSize = g.MeasureString(encodedLabel, encodedLabelFont);
+                        float encodedLabelX = (targetWidth - encodedLabelSize.Width) / 2;
+                        // Leave a gap before drawing the label
+                        labelY = 120;
+                        // Adjust the vertical position down by 10 units (you can modify this value)
+                        labelY += -50;
+                        g.DrawString(encodedLabel, encodedLabelFont, Brushes.Black, new PointF(encodedLabelX, labelY));
+
+                        // Draw encoded values
+                        var encodedArr = encodedData[i];
+                        for (int Xcount = 0; Xcount < encodedArr.Length; Xcount++)
+                        {
+                            // Format the integer as string
+                            string formattedNumber = encodedArr[Xcount].ToString();
+                            // Adjusted position for top middle
+                            float textX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2) - 5;
+                            float textY = 175; // Adjusted vertical position for label
+                            g.DrawString(formattedNumber, font, Brushes.Black, new PointF(textX, textY));
+                            // Draw a line from the top middle of the number to the corresponding heatmap pixel
+                            // Adjusted starting point for the line
+                            float lineStartX = textX + 5;
+                            // Adjusted starting point for the line
+                            float lineStartY = textY - 20;
+                            float lineEndX = (float)(i * scaleX) + (float)(Xcount * scaleX) + (float)(scaleX / 2);
+                            // Adjusted ending point for the line
+                            float lineEndY = 100;
+                            g.DrawLine(Pens.Black, lineStartX, lineStartY, lineEndX, lineEndY);
+                        }
                     }
                 }
             }

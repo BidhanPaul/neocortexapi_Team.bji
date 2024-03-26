@@ -248,6 +248,9 @@ namespace NeoCortexApiSample
             // Initialize a list to get normalized permanence values.
             List<int[]> normalizedPermanence = new List<int[]>();
 
+            // Initialize a list to get normalized permanence values.
+            List<int[]> encodedInputs = new List<int[]>();
+
             // Loop through each input value in the list of input values.
             foreach (var input in inputValues)
             {
@@ -260,8 +263,8 @@ namespace NeoCortexApiSample
                 // Reconstruct the permanence values for the active columns.
                 Dictionary<int, double> reconstructedPermanence = sp.Reconstruct(actCols);
 
-                // Define the maximum number of inputs to consider.
-                int maxInput = 200;
+                // Define the maximum number of inputs (Same size of encoded Inputs) to consider.
+                int maxInput = inpSdr.Length;
 
                 // Initialize a dictionary to hold all permanence values, including those not reconstructed becuase of Inactive columns.
                 Dictionary<int, double> allPermanenceDictionary = new Dictionary<int, double>();
@@ -303,9 +306,12 @@ namespace NeoCortexApiSample
                 // Add the normalized permanences to the list of all normalized permanences.
                 normalizedPermanence.Add(normalizePermanenceList.ToArray());
 
+                // Add the encoded bits to the list of all original encoded Inputs.
+                encodedInputs.Add(inpSdr);
+
             }
             // Generate 1D heatmaps using the heatmap data and the normalized permanences To plot Heatmap and Normalize Image combined.
-            Generate1DHeatmaps(heatmapData, normalizedPermanence);
+            Generate1DHeatmaps(heatmapData, normalizedPermanence, encodedInputs);
         }
 
         /// <summary>
@@ -313,7 +319,7 @@ namespace NeoCortexApiSample
         /// </summary>
         /// <param name="heatmapData">A list containing the heatmap data for each input value.</param>
         /// <param name="normalizedPermanence">A list containing the normalized permanence values for each input value.</param>
-        private void Generate1DHeatmaps(List<List<double>> heatmapData, List<int[]> normalizedPermanence)
+        private void Generate1DHeatmaps(List<List<double>> heatmapData, List<int[]> normalizedPermanence, List<int[]> encodedInputs)
         {
             int i = 1;
 
@@ -337,7 +343,7 @@ namespace NeoCortexApiSample
                 double[] array1D = values.ToArray();
 
                 // Call the Draw1DHeatmap function with the dynamically generated file path
-                NeoCortexUtils.Draw1dHeatmap(new List<double[]>() { array1D }, new List<int[]>() { normalizedPermanence[i - 1] }, filePath, 200, 8, 9, 4, 0, 30);
+                NeoCortexUtils.Draw1dHeatmap(new List<double[]>() { array1D }, new List<int[]>() { normalizedPermanence[i - 1] }, new List<int[]>() { encodedInputs [i - 1] }, filePath, 200, 12, 9, 4, 0, 30);
 
                 //Debugging the Message
                 Debug.WriteLine("Heatmap generated and saved successfully.");
