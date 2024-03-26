@@ -251,6 +251,9 @@ namespace NeoCortexApiSample
             // Initialize a list to get normalized permanence values.
             List<int[]> encodedInputs = new List<int[]>();
 
+            // Initialize a list to measure the similarities.
+            List<double[]> similarityList = new List<double[]>();
+
             // Loop through each input value in the list of input values.
             foreach (var input in inputValues)
             {
@@ -309,6 +312,12 @@ namespace NeoCortexApiSample
                 // Add the encoded bits to the list of all original encoded Inputs.
                 encodedInputs.Add(inpSdr);
 
+                //Calling JaccardSimilarityofBinaryArrays function to measure the similarities
+                var similarity = MathHelpers.JaccardSimilarityofBinaryArrays(inpSdr, normalizePermanenceList.ToArray());
+                double[] similarityArray = new double[] { similarity };
+                // Add the Similarity Arrays to the list.
+                similarityList.Add(similarityArray);
+
             }
             // Generate 1D heatmaps using the heatmap data and the normalized permanences To plot Heatmap and Normalize Image combined.
             Generate1DHeatmaps(heatmapData, normalizedPermanence, encodedInputs);
@@ -343,12 +352,54 @@ namespace NeoCortexApiSample
                 double[] array1D = values.ToArray();
 
                 // Call the Draw1DHeatmap function with the dynamically generated file path
-                NeoCortexUtils.Draw1dHeatmap(new List<double[]>() { array1D }, new List<int[]>() { normalizedPermanence[i - 1] }, new List<int[]>() { encodedInputs [i - 1] }, filePath, 200, 12, 9, 4, 0, 30);
+                NeoCortexUtils.Draw1dHeatmap(new List<double[]>() { array1D }, new List<int[]>() { normalizedPermanence[i - 1] }, new List<int[]>() { encodedInputs[i - 1] }, filePath, 200, 12, 9, 4, 0, 30);
 
                 //Debugging the Message
                 Debug.WriteLine("Heatmap generated and saved successfully.");
                 i++;
             }
+        }
+
+        /// <summary>
+        /// Draws a combined similarity plot based on the list of similarity arrays.
+        /// </summary>
+        /// <param name="similaritiesList">The list of arrays containing similarity values to be combined and plotted.</param>
+        /// <remarks>
+        /// The method combines all similarity values from the list of arrays and generates a plot representing the combined data.
+        /// It creates a folder named "SimilarityPlots" in the current directory if it doesn't exist and saves the plot as a PNG image file named "combined_similarity_plot.png" within this folder.
+        /// Debugging information, including the generated file path and successful plot generation confirmation, is output using Debug.WriteLine.
+        /// </remarks>
+
+        public static void DrawSimilarityPlots(List<double[]> similaritiesList)
+        {
+            // Combine all similarities from the list of arrays
+            List<double> combinedSimilarities = new List<double>();
+            foreach (var similarities in similaritiesList)
+            {
+                combinedSimilarities.AddRange(similarities);
+            }
+
+            // Define the folder path based on the current directory
+            string folderPath = Path.Combine(Environment.CurrentDirectory, "SimilarityPlots");
+
+            // Create the folder if it doesn't exist
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // Define the file name
+            string fileName = "combined_similarity_plot.png";
+
+            // Define the file path with the folder path and file name
+            string filePath = Path.Combine(folderPath, fileName);
+
+            // Draw the combined similarity plot
+            NeoCortexUtils.DrawCombinedSimilarityPlot(combinedSimilarities, filePath);
+            //Debugging the Filepath
+            Debug.WriteLine($"FilePath: {filePath}");
+
+            Debug.WriteLine($"Combined similarity plot generated and saved successfully.");
         }
 
     }
