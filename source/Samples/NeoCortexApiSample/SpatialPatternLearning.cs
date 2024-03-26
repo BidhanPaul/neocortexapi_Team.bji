@@ -292,8 +292,11 @@ namespace NeoCortexApiSample
                         allPermanenceDictionary[inputIndex] = 0.0;
                     }
                 }
-                // Convert the dictionary of all permanences to a list and add it to the heatmap data.
-                List<double> permanenceValuesList = allPermanenceDictionary.Values.ToList();
+                // Sort the dictionary by keys
+                var sortedAllPermanenceDictionary = allPermanenceDictionary.OrderBy(kvp => kvp.Key);
+
+                // Convert the sorted dictionary of all permanences to a list
+                List<double> permanenceValuesList = sortedAllPermanenceDictionary.Select(kvp => kvp.Value).ToList();
 
                 heatmapData.Add(permanenceValuesList);
 
@@ -319,8 +322,10 @@ namespace NeoCortexApiSample
                 similarityList.Add(similarityArray);
 
             }
-            // Generate 1D heatmaps using the heatmap data and the normalized permanences To plot Heatmap and Normalize Image combined.
+            // Generate 1D heatmaps using the heatmap data and the normalized permanences To plot Heatmap, Encoded Inputs and Normalize Image combined.
             Generate1DHeatmaps(heatmapData, normalizedPermanence, encodedInputs);
+            // Plotting Graphs to Visualize Smililarities of Encoded Inputs and Reconstructed Inputs
+            DrawSimilarityPlots(similarityList);
         }
 
         /// <summary>
@@ -395,7 +400,7 @@ namespace NeoCortexApiSample
             string filePath = Path.Combine(folderPath, fileName);
 
             // Draw the combined similarity plot
-            NeoCortexUtils.DrawCombinedSimilarityPlot(combinedSimilarities, filePath);
+            NeoCortexUtils.DrawCombinedSimilarityPlot(combinedSimilarities, filePath, 4500,1100);
             //Debugging the Filepath
             Debug.WriteLine($"FilePath: {filePath}");
 

@@ -415,21 +415,17 @@ namespace NeoCortex
         /// </summary>
         /// <param name="similarities">The list of similarity values to be plotted.</param>
         /// <param name="filePath">The file path where the plot image will be saved.</param>
+        /// <param name="imageWidth">Width of the graph.</param>
+        /// <param name="imageHeight">Height of the graph.</param>
         /// <remarks>
         /// The plot includes bars representing similarity values, indexed from left to right. Each bar's height corresponds to its similarity value.
         /// Axis labels, a title, a scale indicating similarity values, and text indicating the similarity range are added to the plot.
         /// </remarks>
 
-        public static void DrawCombinedSimilarityPlot(List<double> similarities, string filePath)
+        public static void DrawCombinedSimilarityPlot(List<double> similarities, string filePath, int imageWidth, int imageHeight)
         {
-            // Determine the size of the plot
-            // width of the Image
-            int width = 1200;
-            //height of the Image
-            int height = 800;
-
             // Create a new bitmap
-            Bitmap bitmap = new Bitmap(width, height);
+            Bitmap bitmap = new Bitmap(imageWidth, imageHeight);
 
             // Create a graphics object from the bitmap
             using (Graphics graphics = Graphics.FromImage(bitmap))
@@ -442,12 +438,25 @@ namespace NeoCortex
 
                 // Calculate the maximum bar height based on the plot height and scale
                 // Adjusted for title position
-                int maxBarHeight = height - 200;
+                int maxBarHeight = imageHeight - 200;
 
-                // Determine the number of bars and adjust the bar width accordingly
+                // Determine the number of bars
                 int barCount = similarities.Count;
-                // Adjusted bar width
-                int barWidth = (int)((width - 200) / (1.5 * barCount));
+
+                // Calculate the total width occupied by bars and spacing
+                // minimum bar width is 10 pixels
+                int totalBarWidth = barCount * 10;
+                //20 pixels of spacing between bars
+                int totalSpacing = 20 * (barCount + 1);
+
+                // Calculate the maximum available width for bars (excluding margins)
+                // Adjusted for margins
+                int maxAvailableWidth = imageWidth - totalSpacing - 200;
+
+                // Calculate the bar width based on the available space and number of bars
+                // Minimum width for each bar
+                int minBarWidth = 20;
+                int barWidth = Math.Max(minBarWidth, maxAvailableWidth / barCount);
 
                 // Define the width of the scale
                 int scaleWidth = 100;
@@ -460,11 +469,13 @@ namespace NeoCortex
 
                     // Determine the position and size of the bar
                     // Adjusted x position and spacing between bars
-                    int x = scaleWidth + 100 + i * (barWidth + 5);
+                    int x = scaleWidth + (i + 1) * 20 + i * barWidth;
                     // Adjusted for title position and space at the bottom for labels
-                    int y = height - barHeight - 100;
+                    int y = imageHeight - barHeight - 100;
+
+                    // Draw the bar with a minimum width of 1 pixel to avoid disappearance
                     // Subtracting 1 to leave a small gap between bars
-                    int w = barWidth - 1;
+                    int w = Math.Max(1, barWidth - 1);
 
                     // Determine the color based on the similarity level
                     Color color = GetColorForSimilarity(similarities[i]);
@@ -477,30 +488,25 @@ namespace NeoCortex
 
                     // Add labels for each bar
                     // Format the similarity value
-                    string label = similarities[i].ToString("0.00");
-                    // Larger and bold font
+                    string label = similarities[i].ToString("0.0");
                     Font font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold);
                     SizeF labelSize = graphics.MeasureString(label, font);
                     // Draw the label above the bar
                     graphics.DrawString(label, font, Brushes.Black, x + (barWidth - labelSize.Width) / 2, y - 20);
                     // Draw input label below the bar
-                    graphics.DrawString($"Input {i + 1}", font, Brushes.Black, x + (barWidth - labelSize.Width) / 2, height - 50);
+                    graphics.DrawString($"{i + 1}", font, Brushes.Black, x + (barWidth - labelSize.Width) / 2, imageHeight - 50);
                 }
-
                 // Add axis labels
-                // Larger and bold font for axis labels
                 Font axisFont = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
-                graphics.DrawString("Index", axisFont, Brushes.Black, scaleWidth + (width - scaleWidth) / 2, height - 20);
+                graphics.DrawString("X - Axis (Input) Index", axisFont, Brushes.Black, scaleWidth + (imageWidth - scaleWidth) / 2, imageHeight - 20);
                 // Add a title
                 string title = "Similarity Graph";
-                // Larger and bold font for title
                 Font titleFont = new Font(FontFamily.GenericSansSerif, 18, FontStyle.Bold);
                 SizeF titleSize = graphics.MeasureString(title, titleFont);
                 // Adjusted title position
-                graphics.DrawString(title, titleFont, Brushes.Black, (width - titleSize.Width) / 2, 20);
+                graphics.DrawString(title, titleFont, Brushes.Black, (imageWidth - titleSize.Width) / 2, 20);
 
                 // Add a scale indicating values from 0 to 1
-                // Larger and bold font for scale
                 Font scaleFont = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
                 // Draw 11 tick marks
                 for (int i = 0; i <= 10; i++)
@@ -515,12 +521,11 @@ namespace NeoCortex
                 }
 
                 // Add text indicating the similarity test
-                string similarityText = "Similarity Range";
+                string similarityText = "Y axis-Similarity Range";
                 // Larger and bold font for similarity text
                 Font similarityFont = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
                 SizeF similaritySize = graphics.MeasureString(similarityText, similarityFont);
-                graphics.DrawString(similarityText, similarityFont, Brushes.Black, 50, height / 2 - similaritySize.Height / 2, new StringFormat { FormatFlags = StringFormatFlags.DirectionVertical });
-
+                graphics.DrawString(similarityText, similarityFont, Brushes.Black, 50, imageHeight / 2 - similaritySize.Height / 2, new StringFormat { FormatFlags = StringFormatFlags.DirectionVertical });
             }
 
             // Save the bitmap to a file as PNG format
