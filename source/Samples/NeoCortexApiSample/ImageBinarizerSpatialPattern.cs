@@ -243,6 +243,18 @@ namespace NeoCortexApiSample
                 {
                     Directory.CreateDirectory(folderPath);
                 }
+                // Define the file path with the folder path
+                string filePath = Path.Combine(folderPath, $"heatmap_{i}.png");
+                Debug.WriteLine($"FilePath: {filePath}");
+
+                // Convert the probabilitiesList to a 1D array using ToArray
+                double[] array1D = values.ToArray();
+
+                // Call the modified Draw1DHeatmap function with the dynamically generated file path
+                NeoCortexUtils.Draw1dHeatmap(new List<double[]>() { array1D }, new List<int[]>() { normalizedPermanence[i - 1] }, filePath, 784, 15, 30, 15, 5, 30);
+
+                Debug.WriteLine("Heatmap generated and saved successfully.");
+                i++;
 
 
             }
