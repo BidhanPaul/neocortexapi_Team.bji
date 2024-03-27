@@ -400,7 +400,7 @@ namespace NeoCortexApiSample
             string filePath = Path.Combine(folderPath, fileName);
 
             // Draw the combined similarity plot
-            NeoCortexUtils.DrawCombinedSimilarityPlot(combinedSimilarities, filePath, 4500,1100);
+            NeoCortexUtils.DrawCombinedSimilarityPlot(combinedSimilarities, filePath, 4500, 1100);
             //Debugging the Filepath
             Debug.WriteLine($"FilePath: {filePath}");
 

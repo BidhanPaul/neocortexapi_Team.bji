@@ -18,9 +18,13 @@ namespace NeoCortexApiSample
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            //
+            
             // Starts experiment that demonstrates how to learn spatial patterns.
-            SpatialPatternLearning experiment = new SpatialPatternLearning();
+            //SpatialPatternLearning experiment = new SpatialPatternLearning();
+            //experiment.Run();
+
+            // Starts experiment For the Image Inputs how to learn spatial patterns.
+            ImageBinarizerSpatialPattern experiment = new ImageBinarizerSpatialPattern();
             experiment.Run();
 
             //

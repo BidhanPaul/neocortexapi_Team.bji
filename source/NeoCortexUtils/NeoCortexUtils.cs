@@ -207,6 +207,7 @@ namespace NeoCortex
 
         /// <summary>
         /// Combines heatmap and normalized permanence representations into a single image with title.
+        /// This Drwaitng Function is used to Visulalization of the Permanence Values.
         /// </summary>
         /// <param name="heatmapData">List of arrays representing the heatmap data.</param>
         /// <param name="normalizedData">List of arrays representing normalized data below the heatmap.</param>
@@ -412,6 +413,8 @@ namespace NeoCortex
 
         /// <summary>
         /// Draws a combined similarity plot based on the given list of similarity values.
+        /// This graph can Visulaze the Similarity Bar graph of multiple inputs between the Encoded inputs
+        /// and the Reconsturced Inputs using Reconstruct Method.
         /// </summary>
         /// <param name="similarities">The list of similarity values to be plotted.</param>
         /// <param name="filePath">The file path where the plot image will be saved.</param>

@@ -313,7 +313,7 @@ namespace NeoCortexApiSample
             }
 
             // Define the file name
-            string fileName = "combined_similarity_plot.png";
+            string fileName = "combined_similarity_plot_Image_Inputs.png";
 
             // Define the file path with the folder path and file name
 
