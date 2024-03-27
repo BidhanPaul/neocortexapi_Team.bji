@@ -276,6 +276,15 @@ namespace NeoCortexApiSample
             }
 
 
+            string folderPath = Path.Combine(Environment.CurrentDirectory, "SimilarityPlots");
+
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+
 
 
         }
