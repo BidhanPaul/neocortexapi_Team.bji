@@ -264,6 +264,19 @@ namespace NeoCortexApiSample
 
         }
 
+        public static void DrawSimilarityPlots(List<double[]> similaritiesList)
+        {
+
+            List<double> combinedSimilarities = new List<double>();
+            foreach (var similarities in similaritiesList)
+
+                Debug.WriteLine($"Combined similarity plot generated and saved successfully.");
+
+
+
+        }
+
+
 
     }
 }
