@@ -1,12 +1,148 @@
-﻿using System;
+﻿using NeoCortex;
+using NeoCortexApi.Encoders;
+using NeoCortexApi.Entities;
+using NeoCortexApi.Network;
+using NeoCortexApi.Utility;
+using NeoCortexApi;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics.Metrics;
+using System.Drawing;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Drawing.Imaging;
 
 namespace NeoCortexApiSample
 {
     internal class ImageBinarizerSpatialPattern
     {
+        public string inputPrefix { get; private set; }
+
+        public void Run()
+        {
+            Console.WriteLine($"Hello NeocortexApi! Experiment {nameof(ImageBinarizerSpatialPattern)}");
+
+            double minOctOverlapCycles = 1.0;
+            double maxBoost = 5.0;
+            int numColumns = 64 * 64;
+            int imageSize = 28;
+            var colDims = new int[] { 64, 64 };
+
+            HtmConfig cfg = new HtmConfig(new int[] { imageSize, imageSize }, new int[] { numColumns })
+            {
+                CellsPerColumn = 10,
+                InputDimensions = new int[] { imageSize, imageSize },
+                NumInputs = imageSize * imageSize,
+                ColumnDimensions = colDims,
+                MaxBoost = maxBoost,
+                DutyCyclePeriod = 100,
+                MinPctOverlapDutyCycles = minOctOverlapCycles,
+                GlobalInhibition = false,
+                NumActiveColumnsPerInhArea = 0.02 * numColumns,
+                PotentialRadius = (int)(0.15 * imageSize * imageSize),
+                LocalAreaDensity = -1,
+                ActivationThreshold = 10,
+                MaxSynapsesPerSegment = (int)(0.01 * numColumns),
+                Random = new ThreadSafeRandom(42),
+                StimulusThreshold = 10,
+            };
+
+
+            var sp = RunExperiment(cfg, inputPrefix);
+
+        }
+
+        private SpatialPooler RunExperiment(HtmConfig cfg, string inputPrefix)
+        {
+
+            var mem = new Connections(cfg);
+            bool isInStableState = false;
+
+            int numColumns = 64 * 64;
+
+            string trainingFolder = "Sample\\TestFiles";
+
+            var trainingImages = Directory.GetFiles(trainingFolder, $"{inputPrefix}*.png");
+
+            int imageSize = 28;
+
+            string testName = "test_image";
+
+            HomeostaticPlasticityController hpa = new HomeostaticPlasticityController(mem, trainingImages.Length * 50, (isStable, numPatterns, actColAvg, seenInputs) =>
+            {
+                // Event should only be fired when entering the stable state.
+                if (isStable)
+                {
+                    isInStableState = true;
+                    Debug.WriteLine($"Entered STABLE state: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
+
+
+                }
+                else
+                {
+                    isInStableState = false;
+                    Debug.WriteLine($"INSTABLE STATE");
+
+
+                }
+                // Ideal SP should never enter unstable state after stable state.
+                Debug.WriteLine($"Entered STABLE state: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
+            }, requiredSimilarityThreshold: 0.975);
+
+            SpatialPooler sp = new SpatialPooler(hpa);
+
+            sp.Init(mem, new DistributedMemory() { ColumnDictionary = new InMemoryDistributedDictionary<int, NeoCortexApi.Entities.Column>(1) });
+
+
+            int imgSize = 28;
+            int[] activeArray = new int[numColumns];
+            int numStableCycles = 0;
+
+            //Dictionary<string, int[]> sdrs = new Dictionary<string, int[]>();
+
+            int maxCycles = 5;
+            int currentCycle = 0;
+
+            while (!isInStableState && currentCycle < maxCycles)
+            {
+                foreach (var Image in trainingImages)
+                {
+                    string inputBinaryImageFile = NeoCortexUtils.BinarizeImage($"{Image}", imgSize, testName);
+
+                    // Read input csv file into array
+                    int[] inputVector = NeoCortexUtils.ReadCsvIntegers(inputBinaryImageFile).ToArray();
+
+                    int[] oldArray = new int[activeArray.Length];
+                    List<double[,]> overlapArrays = new List<double[,]>();
+                    List<double[,]> bostArrays = new List<double[,]>();
+
+                    sp.compute(inputVector, activeArray, true);
+
+                    var activeCols = ArrayUtils.IndexWhere(activeArray, (el) => el == 1);
+
+                    Debug.WriteLine($"'Cycle: {currentCycle} - {Image}'");
+                    Debug.WriteLine($"INPUT :{Helpers.StringifyVector(inputVector)}");
+                    Debug.WriteLine($"SDR:{Helpers.StringifyVector(activeCols)}\n");
+                }
+
+                currentCycle++;
+
+                // Check if the desired number of cycles is reached
+                if (currentCycle >= maxCycles)
+                    break;
+
+                // Increment numStableCycles only when it's in a stable state
+                if (isInStableState)
+                    numStableCycles++;
+            }
+
+            return sp;
+        }
+
     }
 }
+
