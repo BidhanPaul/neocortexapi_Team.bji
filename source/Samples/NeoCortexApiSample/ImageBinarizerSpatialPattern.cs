@@ -231,6 +231,21 @@ namespace NeoCortexApiSample
         /// <param name="normalizedPermanence">List of arrays containing normalized permanence values.</param>
         private void Generate1DHeatmaps(List<List<double>> heatmapData, List<int[]> normalizedPermanence)
         {
+            int i = 1;
+
+            foreach (var values in heatmapData)
+            {
+                // Define the folder path based on your requirements
+                string folderPath = Path.Combine(Environment.CurrentDirectory, "1DHeatMap_Image_Inputs");
+
+                // Create the folder if it doesn't exist
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+
+            }
 
         }
 
