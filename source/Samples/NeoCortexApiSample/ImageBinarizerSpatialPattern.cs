@@ -199,7 +199,26 @@ namespace NeoCortexApiSample
                     }
                 }
 
-                // Continue with further operations...
+                // Sort the dictionary by keys
+                var sortedAllPermanenceDictionary = allPermanenceDictionary.OrderBy(kvp => kvp.Key);
+                // Convert the sorted dictionary of allpermanences to a list
+                List<double> permanenceValuesList = sortedAllPermanenceDictionary.Select(kvp => kvp.Value).ToList();
+
+                heatmapData.Add(permanenceValuesList);
+
+                var ThresholdValue = 36.5;
+
+                List<int> normalizePermanenceList = Helpers.ThresholdingProbabilities(permanenceValuesList, ThresholdValue);
+
+                normalizedPermanence.Add(normalizePermanenceList.ToArray());
+
+                var similarity = MathHelpers.JaccardSimilarityofBinaryArrays(inputVector, normalizePermanenceList.ToArray());
+
+                double[] similarityArray = new double[] { similarity };
+
+                similarityList.Add(similarityArray);
+
+
             }
 
 
