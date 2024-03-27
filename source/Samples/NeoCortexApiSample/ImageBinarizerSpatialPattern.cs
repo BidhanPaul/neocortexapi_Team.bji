@@ -266,11 +266,15 @@ namespace NeoCortexApiSample
 
         public static void DrawSimilarityPlots(List<double[]> similaritiesList)
         {
+            // Combine all similarities from the list of arrays
 
             List<double> combinedSimilarities = new List<double>();
             foreach (var similarities in similaritiesList)
 
-                Debug.WriteLine($"Combined similarity plot generated and saved successfully.");
+            {
+                combinedSimilarities.AddRange(similarities);
+            }
+
 
 
 
