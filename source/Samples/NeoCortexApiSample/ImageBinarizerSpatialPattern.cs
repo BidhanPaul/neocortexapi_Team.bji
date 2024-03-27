@@ -157,6 +157,32 @@ namespace NeoCortexApiSample
             List<List<double>> heatmapData = new List<List<double>>(); // List to store heatmap data
             List<int[]> normalizedPermanence = new List<int[]>(); // List to store normalized permanence values
             List<double[]> similarityList = new List<double[]>(); // List to store similarity values
+            foreach (var Image in trainingImages)
+            {
+                string inputBinaryImageFile = NeoCortexUtils.BinarizeImage($"{Image}", imgSize, testName);
+
+                // Read input csv file into array
+                int[] inputVector = NeoCortexUtils.ReadCsvIntegers(inputBinaryImageFile).ToArray();
+
+                // Initialize arrays and lists for computations
+                int[] oldArray = new int[activeArray.Length];
+                List<double[,]> overlapArrays = new List<double[,]>();
+                List<double[,]> bostArrays = new List<double[,]>();
+
+                // Compute spatial pooling on the input vector
+                sp.compute(inputVector, activeArray, true);
+                var activeCols = ArrayUtils.IndexWhere(activeArray, (el) => el == 1);
+
+                Dictionary<int, double> reconstructedPermanence = sp.Reconstruct(activeCols);
+
+                int maxInput = inputVector.Length;
+
+                // Create a new dictionary to store extended probabilities
+                Dictionary<int, double> allPermanenceDictionary = new Dictionary<int, double>();
+
+                // Continue with further operations...
+            }
+
 
 
         }
