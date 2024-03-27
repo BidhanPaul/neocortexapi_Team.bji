@@ -275,20 +275,29 @@ namespace NeoCortexApiSample
                 combinedSimilarities.AddRange(similarities);
             }
 
+            // Define the folder path based on the current directory
 
             string folderPath = Path.Combine(Environment.CurrentDirectory, "SimilarityPlots");
 
+
+            // Create the folder if it doesn't exist
 
             if (!Directory.Exists(folderPath))
             {
                 Directory.CreateDirectory(folderPath);
             }
 
-
+            // Define the file name
             string fileName = "combined_similarity_plot.png";
+
+
+            // Define the file path with the folder path and file name
 
             string filePath = Path.Combine(folderPath, fileName);
 
+
+
+            // Draw the combined similarity plot
             NeoCortexUtils.DrawCombinedSimilarityPlot(combinedSimilarities, filePath, 1000, 850);
 
 
