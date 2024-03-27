@@ -285,7 +285,14 @@ namespace NeoCortexApiSample
             }
 
 
+            string fileName = "combined_similarity_plot.png";
 
+            string filePath = Path.Combine(folderPath, fileName);
+
+            NeoCortexUtils.DrawCombinedSimilarityPlot(combinedSimilarities, filePath, 1000, 850);
+
+
+            Debug.WriteLine($"Combined similarity plot generated and saved successfully.");
 
         }
 
