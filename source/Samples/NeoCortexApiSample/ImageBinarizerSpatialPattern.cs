@@ -142,6 +142,25 @@ namespace NeoCortexApiSample
 
             return sp;
         }
+        /// <summary>
+        /// Runs the restructuring experiment using the provided spatial pooler. This method iterates through a set of training images, computes spatial pooling, reconstructs permanence values, and generates heatmaps and similarity graphs based on the results.
+        /// </summary>
+        /// <param name="sp">The spatial pooler to use for the experiment.</param>
+        private void RunRustructuringExperiment(SpatialPooler sp)
+        {
+            // Define parameters and data structures for the experiment
+            string trainingFolder = "Sample\\TestFiles"; // Path to the folder containing training images
+            var trainingImages = Directory.GetFiles(trainingFolder, $"{inputPrefix}*.png"); // Get all image files matching the specified prefix
+            int imgSize = 28; // Size of the images
+            string testName = "test_image"; // Name for the test image
+            int[] activeArray = new int[64 * 64]; // Array to hold active columns
+            List<List<double>> heatmapData = new List<List<double>>(); // List to store heatmap data
+            List<int[]> normalizedPermanence = new List<int[]>(); // List to store normalized permanence values
+            List<double[]> similarityList = new List<double[]>(); // List to store similarity values
+
+
+        }
+
 
     }
 }
