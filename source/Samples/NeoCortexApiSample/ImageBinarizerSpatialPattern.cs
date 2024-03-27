@@ -224,6 +224,15 @@ namespace NeoCortexApiSample
 
 
         }
+        /// <summary>
+        /// Generates 1D heatmaps based on the provided heatmap data and normalized permanence values.
+        /// </summary>
+        /// <param name="heatmapData">List of lists containing heatmap data.</param>
+        /// <param name="normalizedPermanence">List of arrays containing normalized permanence values.</param>
+        private void Generate1DHeatmaps(List<List<double>> heatmapData, List<int[]> normalizedPermanence)
+        {
+
+        }
 
 
     }
