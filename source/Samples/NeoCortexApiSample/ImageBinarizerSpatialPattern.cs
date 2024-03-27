@@ -130,7 +130,7 @@ namespace NeoCortexApiSample
                     //Getting the Active Columns
                     var activeCols = ArrayUtils.IndexWhere(activeArray, (el) => el == 1);
 
-                    Debug.WriteLine($"'Cycle: {currentCycle} - {Image}'");
+                    Debug.WriteLine($"'Cycle: {currentCycle} - Image-Input: {Image}'"); 
                     Debug.WriteLine($"INPUT :{Helpers.StringifyVector(inputVector)}");
                     Debug.WriteLine($"SDR:{Helpers.StringifyVector(activeCols)}\n");
                 }
@@ -228,7 +228,7 @@ namespace NeoCortexApiSample
                 BinarizedencodedInputs.Add(inputVector);
 
                 //Normalizing Permanence Threshold
-                var ThresholdValue = 36.5;
+                var ThresholdValue = 30.5;
 
                 // Normalize permanences (0 and 1) based on the threshold value and convert them to a list of integers.
                 List<int> normalizePermanenceList = Helpers.ThresholdingProbabilities(permanenceValuesList, ThresholdValue);
@@ -246,6 +246,8 @@ namespace NeoCortexApiSample
             }
             // Generate the 1D heatmaps using the heatmapData list
             Generate1DHeatmaps(heatmapData, BinarizedencodedInputs, normalizedPermanence);
+            // Generate the Similarity graph using the Similarity list
+            DrawSimilarityPlots(similarityList);
         }
 
         /// <summary>
