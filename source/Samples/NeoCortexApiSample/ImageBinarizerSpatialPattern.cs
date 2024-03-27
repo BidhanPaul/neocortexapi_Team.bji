@@ -220,6 +220,9 @@ namespace NeoCortexApiSample
 
 
             }
+            // Generate the 1D heatmaps using the heatmapData list
+            Generate1DHeatmaps(heatmapData, normalizedPermanence);
+           
 
 
 
