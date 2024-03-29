@@ -5,11 +5,34 @@
 
 
 In this Documentation we will describe our contribution in this project.
-
+#### Instruction for Runnig the Project
+- Clone the Repository and Run
+- You will get the project here
+[NeoCortexApiSample](https://github.com/BidhanPaul/neocortexapi_team.bji/tree/master/source/Samples/NeoCortexApiSample)
+#### Two Expriments
+- **`SpatialPatternLearning.cs`**: Numerical Inputs 
+[SpatialPatternLearning.cs](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/Samples/NeoCortexApiSample/SpatialPatternLearning.cs)
+- **`ImageBinarizerSpatialPattern.cs`**: Image Inputs 
+[ImageBinarizerSpatialPattern.cs](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/Samples/NeoCortexApiSample/ImageBinarizerSpatialPattern.cs)
+###### Image Input set are already uploaded here
+- neocortexapi_team.bji\source\Samples\NeoCortexApiSample\bin\Debug\net8.0\Sample\TestFiles
+###### Simply Change the Runnig commands here 
+- **`Program.cs`**: Goto Program.cs file of NeoCortexApiSample
+- Change the codes here Clieck the Link below and it will Redirect you.
+[Program.cs](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/Samples/NeoCortexApiSample/Program.cs#L23-L28)
+###### All the output will be saved here
+- neocortexapi_team.bji\source\Samples\NeoCortexApiSample\bin\Debug\net8.0
+#### Runnig Unit Test Expriments
+Go to this File and Run Unit-Test Project for **`SdrReconstructionTests.cs`**
+[SdrReconstructionTests.cs](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/UnitTestsProject/SdrReconstructionTests.cs)
 ## Introduction
-In our project to fully utilize the potential of HTM, we investigate the Reconstruct() function, the newest addition to the "NeoCortexAPI." The the core of our project is this technique, which is the inverse of SP. The project entitled "Visualization of Reconstructed Permanence Values." In order to demonstrate how HTM's Spatial Pooler applies the Reconstruct() method for input sequence rebuilding, we aim to clarify the terms between input and output.
+Our project focuses on exploring the Reconstruct() function within HTM's "NeoCortexAPI" to unlock its full potential. This function, serving as the inverse of SP, lies at the core of our investigation. Titled "Visualization of Reconstructed Permanence Values," our project aims to demonstrate how HTM's Spatial Pooler utilizes Reconstruct() for input sequence rebuilding. By employing images as input, we strive to elucidate the relationship between input and output in HTM. Through our exploration, we aim to contribute to a clearer understanding and effective utilization of HTM technology.
 # Methodology
-Our methodology revolves around the precise reconstruction of the original input, initiated by providing numerical values ranging from 0 to 99. The encoder transforms these numerical values into int[] arrays, representing arrays of 0s and 1s, each consisting of 200 bits post-encoding. These encoded arrays become the sole input for our experiment.
+Our methodology encompasses two distinct approaches: one involving encoded numerical values and the other employing images as input.
+
+For the encoded numerical values, our process begins with the provision of numerical data ranging from 0 to 99. These numerical inputs undergo transformation via an encoder, converting them into int[] arrays. Each array, consisting of 200 bits post-encoding, represents a sequence of 0s and 1s. These encoded arrays exclusively serve as input for our experiment, enabling us to evaluate the Reconstruct() function within HTM's "NeoCortexAPI" for input sequence rebuilding.
+
+On the other hand, for image input, our methodology involves extracting visual information from images and preprocessing them for compatibility with HTM. Each image undergoes transformation into a numerical format, typically represented as arrays of pixel values. These pixel arrays are then encoded to align with HTM's processing framework. The resulting encoded representations of the images serve as input for our experiment, allowing us to investigate the application of the Reconstruct() function within HTM's Spatial Pooler for reconstructing image sequences.
 
 **Fig: Methodology Flowchart**
 ![Methodology Flowchart](https://raw.githubusercontent.com/BidhanPaul/neocortexapi_team.bji/master/source/Docomentation%20neocortexapi_Team.bji/Flowchart.jpg)
@@ -72,60 +95,206 @@ Utilizing the Neocortexapi's Reconstruct() method, we meticulously reverse the t
    
 - **Result Return:** The method concludes by returning the reconstructed input as a dictionary, mapping input indices to their associated permanences.
 
-# Running Reconstruct Method
+# Running Reconstruct Method for Numerical Inputs
 ```csharp
-    private void RunRustructuringExperiment(SpatialPooler sp, EncoderBase encoder, List<double> inputValues)
+     private void RunRustructuringExperiment(SpatialPooler sp, EncoderBase encoder, List<double> inputValues)
+ {
+     // Initialize a list to get heatmap data for all input values.
+     List<List<double>> heatmapData = new List<List<double>>();
+
+     // Initialize a list to get normalized permanence values.
+     List<int[]> normalizedPermanence = new List<int[]>();
+
+     // Initialize a list to get normalized permanence values.
+     List<int[]> encodedInputs = new List<int[]>();
+
+     // Initialize a list to measure the similarities.
+     List<double[]> similarityList = new List<double[]>();
+
+     // Loop through each input value in the list of input values.
+     foreach (var input in inputValues)
+     {
+         // Encode the current input value using the provided encoder, resulting in an SDR
+         var inpSdr = encoder.Encode(input);
+
+         // Compute the active columns in the spatial pooler for the given input SDR, without learning.
+         var actCols = sp.Compute(inpSdr, false);
+
+         // Reconstruct the permanence values for the active columns.
+         Dictionary<int, double> reconstructedPermanence = sp.Reconstruct(actCols);
+
+         // Define the maximum number of inputs (Same size of encoded Inputs) to consider.
+         int maxInput = inpSdr.Length;
+
+         // Initialize a dictionary to hold all permanence values, including those not reconstructed becuase of Inactive columns.
+         Dictionary<int, double> allPermanenceDictionary = new Dictionary<int, double>();
+
+         // Populate the all permanence dictionary with reconstructed permanence values.
+         foreach (var kvp in reconstructedPermanence)
+         {
+             int inputIndex = kvp.Key;
+
+             double probability = kvp.Value;
+
+             allPermanenceDictionary[inputIndex] = probability;
+
+         }
+         // Ensure that all input indices up to the maximum are represented in the dictionary, even if their permanence is 0.
+         for (int inputIndex = 0; inputIndex < maxInput; inputIndex++)
+         {
+
+             if (!reconstructedPermanence.ContainsKey(inputIndex))
+             {
+
+                 allPermanenceDictionary[inputIndex] = 0.0;
+             }
+         }
+         // Sort the dictionary by keys
+         var sortedAllPermanenceDictionary = allPermanenceDictionary.OrderBy(kvp => kvp.Key);
+
+         // Convert the sorted dictionary of all permanences to a list
+         List<double> permanenceValuesList = sortedAllPermanenceDictionary.Select(kvp => kvp.Value).ToList();
+
+         heatmapData.Add(permanenceValuesList);
+
+         // Output debug information showing the input value and its corresponding SDR as a string.
+         Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
+
+         // Define a threshold value for normalizing permanences, this value provides best Reconstructed Input
+         var ThresholdValue = 8.3;
+
+         // Normalize permanences (0 and 1) based on the threshold value and convert them to a list of integers.
+         List<int> normalizePermanenceList = Helpers.ThresholdingProbabilities(permanenceValuesList, ThresholdValue);
+
+         // Add the normalized permanences to the list of all normalized permanences.
+         normalizedPermanence.Add(normalizePermanenceList.ToArray());
+
+         // Add the encoded bits to the list of all original encoded Inputs.
+         encodedInputs.Add(inpSdr);
+
+         //Calling JaccardSimilarityofBinaryArrays function to measure the similarities
+         var similarity = MathHelpers.JaccardSimilarityofBinaryArrays(inpSdr, normalizePermanenceList.ToArray());
+         double[] similarityArray = new double[] { similarity };
+         // Add the Similarity Arrays to the list.
+         similarityList.Add(similarityArray);
+
+     }
+     // Generate 1D heatmaps using the heatmap data and the normalized permanences To plot Heatmap, Encoded Inputs and Normalize Image combined.
+     Generate1DHeatmaps(heatmapData, normalizedPermanence, encodedInputs);
+     // Plotting Graphs to Visualize Smililarities of Encoded Inputs and Reconstructed Inputs
+     DrawSimilarityPlots(similarityList);
+ }
+
+```
+[Running Reconstruct Method For Numeric Data](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/Samples/NeoCortexApiSample/SpatialPatternLearning.cs#L243-L329) - Lines (243 to 329)
+# Running Reconstruct Method for Image Inputs
+```csharp
+    private void RunRustructuringExperiment(SpatialPooler sp)
 {
-    foreach (var input in inputValues)
+    // Path to the folder containing training images
+    string trainingFolder = "Sample\\TestFiles";
+    // Get all image files matching the specified prefix
+    var trainingImages = Directory.GetFiles(trainingFolder, $"{inputPrefix}*.png");
+    // Size of the images
+    int imgSize = 28;
+    // Name for the test image
+    string testName = "test_image";
+    // Array to hold active columns
+    int[] activeArray = new int[64 * 64];
+    // List to store heatmap data
+    List<List<double>> heatmapData = new List<List<double>>();
+    // Initialize a list to get normalized permanence values.
+    List<int[]> BinarizedencodedInputs = new List<int[]>();
+    // List to store normalized permanence values
+    List<int[]> normalizedPermanence = new List<int[]>();
+    // List to store similarity values
+    List<double[]> similarityList = new List<double[]>();
+    foreach (var Image in trainingImages)
     {
-        var inpSdr = encoder.Encode(input);
+        string inputBinaryImageFile = NeoCortexUtils.BinarizeImage($"{Image}", imgSize, testName);
 
-        var actCols = sp.Compute(inpSdr, false);
+        // Read input csv file into array
+        int[] inputVector = NeoCortexUtils.ReadCsvIntegers(inputBinaryImageFile).ToArray();
 
-        Dictionary<int, double> reconstructedPermanence = sp.Reconstruct(actCols);
+        // Initialize arrays and lists for computations
+        int[] oldArray = new int[activeArray.Length];
+        List<double[,]> overlapArrays = new List<double[,]>();
+        List<double[,]> bostArrays = new List<double[,]>();
 
-        int maxInput = 200;
+        // Compute spatial pooling on the input vector
+        sp.compute(inputVector, activeArray, true);
+        var activeCols = ArrayUtils.IndexWhere(activeArray, (el) => el == 1);
 
+        Dictionary<int, double> reconstructedPermanence = sp.Reconstruct(activeCols);
+
+        int maxInput = inputVector.Length;
+
+        // Create a new dictionary to store extended probabilities
         Dictionary<int, double> allPermanenceDictionary = new Dictionary<int, double>();
-
+        // Iterate through all possible inputs using a foreach loop
         foreach (var kvp in reconstructedPermanence)
         {
             int inputIndex = kvp.Key;
-
             double probability = kvp.Value;
 
-            allPermanenceDictionary [inputIndex] = probability;
-
+            // Use the existing probability
+            allPermanenceDictionary[inputIndex] = probability;
         }
-       
+
+        //Assinginig the inactive columns Permanence 0
         for (int inputIndex = 0; inputIndex < maxInput; inputIndex++)
         {
-
             if (!reconstructedPermanence.ContainsKey(inputIndex))
             {
-
+                // Key doesn't exist, set the probability to 0
                 allPermanenceDictionary[inputIndex] = 0.0;
             }
         }
-        Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
 
-        var ThresholdValue = 8.3;
+        // Sort the dictionary by keys
+        var sortedAllPermanenceDictionary = allPermanenceDictionary.OrderBy(kvp => kvp.Key);
+        // Convert the sorted dictionary of allpermanences to a list
+        List<double> permanenceValuesList = sortedAllPermanenceDictionary.Select(kvp => kvp.Value).ToList();
 
+        //Collecting Heatmap Data for Visualization
+        heatmapData.Add(permanenceValuesList);
+
+        //Collecting Encoded Data for Visualization
+        BinarizedencodedInputs.Add(inputVector);
+
+        //Normalizing Permanence Threshold
+        var ThresholdValue = 30.5;
+
+        // Normalize permanences (0 and 1) based on the threshold value and convert them to a list of integers.
         List<int> normalizePermanenceList = Helpers.ThresholdingProbabilities(permanenceValuesList, ThresholdValue);
 
+        //Collecting Normalized Permanence List for Visualizing
         normalizedPermanence.Add(normalizePermanenceList.ToArray());
+
+        //Calculating Similarity with encoded Inputs and Reconstructed Inputs
+        var similarity = MathHelpers.JaccardSimilarityofBinaryArrays(inputVector, normalizePermanenceList.ToArray());
+
+        double[] similarityArray = new double[] { similarity };
+
+        //Collecting Similarity Data for visualizing
+        similarityList.Add(similarityArray);
     }
+    // Generate the 1D heatmaps using the heatmapData list
+    Generate1DHeatmaps(heatmapData, BinarizedencodedInputs, normalizedPermanence);
+    // Generate the Similarity graph using the Similarity list
+    DrawSimilarityPlots(similarityList);
 }
 
 ```
-[Running Reconstruct Method](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/Samples/NeoCortexApiSample/SpatialPatternLearning.cs#L213) - Lines (213 to 308)
-### Implementation Details:
+[Running Reconstruct Method for Image Data](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/Samples/NeoCortexApiSample/ImageBinarizerSpatialPattern.cs#L157-L251) - Lines (157 to 251)
+### Implementation Details for both inputs Type():
 ###### Reconstruct permanence values from active columns using the Spatial Pooler
 reconstructedPermanence = sp.Reconstruct(actCols)
 
 ###### Set the maximum input index
-maxInput = 200
-###### Note: According to the size of Encoded Inputs (200 bits)
+maxInput = lengthofinputvectors
+###### Note: According to the size of Encoded Inputs (200 bits for numerical inputs)
+###### Note: According to the size of Encoded Inputs (for image  inputs the output of encoded bits depends on the multiplication of height and width of the image )
 
 ###### Initialize a dictionary to store all input indices and their associated permanence probabilities
 allPermanenceDictionary = new Dictionary<int, double>()
@@ -141,14 +310,16 @@ for inputIndex from 0 to maxInput
 
 ###### Note: reconstructedPermanence is a subset contributing to the construction of allPermanenceDictionary
 
-## Getting Data For Visualizing Permanence Values
+## Getting Data For Visualizing Results
 ```csharp
     //Getting The Heatmap data from Reconstructed Permanence as Double
      List<List<double>> heatmapData = new List<List<double>>();
+     //Getting The encoded bits data
+     List<int[]> encodedInputs = new List<int[]>();
     //Getting The Nomalize Permanence as int
      List<int[]> normalizedPermanence = new List<int[]>();
 ```
-## Normalizing the Permanence Values
+## Normalizing the Permanence Values for Numeric Input Data
 ```csharp
    //We used the Threshold values 8.3 to normalize the permanence
    var ThresholdValue = 8.3;
@@ -157,10 +328,47 @@ List<int> normalizePermanenceList = Helpers.ThresholdingProbabilities(permanence
   //Converting normalizedPermanence into Array
 normalizedPermanence.Add(normalizePermanenceList.ToArray());
 ```
+
 ###### Note: The Threshold Value 8.3 has the ability to Normalize The permanence with the most similiraty with Encoded Inputs. We tried multiple Threshold values and Debugged the output and compared with encoded inputs.
-## Generate1DHeatmaps Function
+## Normalizing the Permanence Values for Image Input Data
 ```csharp
-   private void Generate1DHeatmaps(List<List<double>> heatmapData, List<int[]> normalizedPermanence)
+   //Normalizing Permanence Threshold
+var ThresholdValue = 30.5;
+
+// Normalize permanences (0 and 1) based on the threshold value and convert them to a list of integers.
+List<int> normalizePermanenceList = Helpers.ThresholdingProbabilities(permanenceValuesList, ThresholdValue);
+
+//Collecting Normalized Permanence List for Visualizing
+normalizedPermanence.Add(normalizePermanenceList.ToArray());
+```
+###### Note: The Threshold Value 30.5 has the ability to Normalize The permanence with the most similiraty with Encoded Inputs. We tried multiple Threshold values and Debugged the output and compared with encoded inputs.
+## Normalizing Function (ThresholdingProbabilities)
+```csharp
+  public static List<int> ThresholdingProbabilities(IEnumerable<double> values, double threshold)
+{
+    if (values == null)
+    {
+        return null;
+    }
+
+    List<int> resultList = new List<int>();
+
+    foreach (var numericValue in values)
+    {
+        int thresholdedValue = (numericValue >= threshold) ? 1 : 0;
+
+        resultList.Add(thresholdedValue);
+    }
+
+    return resultList;
+}
+```
+Here is the Function
+[Helpers.cs
+](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/NeoCortexApi/Helpers.cs#L620-L637) - Lines (620 to 637)
+## Generate1DHeatmaps Function for both Input types
+```csharp
+   private void Generate1DHeatmaps(List<List<double>> heatmapData, List<int[]> encodedData, List<int[]> normalizedPermanence)
 {
     int i = 1;
 
@@ -179,7 +387,7 @@ normalizedPermanence.Add(normalizePermanenceList.ToArray());
       
         double[] array1D = values.ToArray();
        
-        NeoCortexUtils.Draw1DHeatmap(new List<double[]>() { array1D }, new List<int[]>() { normalizedPermanence[i - 1] }, filePath, 200, 8, 9, 4, 0, 30);
+        NeoCortexUtils.Draw1DHeatmap(new List<double[]>() { array1D }, new List<int[]>() { normalizedPermanence[i - 1] }, new List<int[]>() { normalizedPermanence[i - 1] }, filePath, 200, 8, 9, 4, 0, 30);
 
         Debug.WriteLine("Heatmap generated and saved successfully.");
         i++;
@@ -189,6 +397,7 @@ normalizedPermanence.Add(normalizePermanenceList.ToArray());
 [GenarateHeatmap Function](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/Samples/NeoCortexApiSample/SpatialPatternLearning.cs#L311) - Lines (311 to 341)
 ###### Parameters
 - `heatmapData`: A list of lists containing probability data for heatmap generation.
+- `EncodedData`: A list of lists containing Encoded input Data.
 - `normalizedPermanence`: A list of arrays containing normalized permanence values corresponding to the heatmap data.
 
 ###### Implementation
@@ -226,12 +435,13 @@ normalizedPermanence.Add(normalizePermanenceList.ToArray());
 Generate1DHeatmaps(heatmapData, normalizedPermanence);
 ```
 
-## Dual Visualization: Heatmaps and int[] Sequences
+## Combined Visualization: Heatmaps and int[] Sequences
 We Applied this Function to Draw1DHeatmap
 Click Below for More Details 
-[Draw1dHeatmap](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/NeoCortexUtils/NeoCortexUtils.cs) - Lines (220 to 306)
+[Draw1dHeatmap](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/NeoCortexUtils/NeoCortexUtils.cs#L222-L351) - Lines (222 to 351)
 **Outcomes:**
 - HeatMap Image for all inputs as Image Visualization.
+- Encoded Inputs as int []
 - Reconstruced Input as int [] (Normalized Permanence)
 - Combined Image.
 
@@ -239,13 +449,54 @@ Click Below for More Details
 **Results Example:**
 **Fig: Final Outcome**
 ![Final Outcome](https://raw.githubusercontent.com/BidhanPaul/neocortexapi_team.bji/master/source/Docomentation%20neocortexapi_Team.bji/Final_Outcome_Example_heatmap_1.png)
+## Similarity Calculation Using Jaccard Similarity Coefficient
+```csharp
+   public static double JaccardSimilarityofBinaryArrays(int[] arr1, int[] arr2)
+{
+    if (arr1.Length != arr2.Length)
+    {
+        throw new ArgumentException("Arrays must have the same length.");
+    }
+
+    int intersectionCount = 0;
+    int unionCount = 0;
+
+    for (int i = 0; i < arr1.Length; i++)
+    {
+        if (arr1[i] == 1 && arr2[i] == 1)
+        {
+            intersectionCount++;
+        }
+        if (arr1[i] == 1 || arr2[i] == 1)
+        {
+            unionCount++;
+        }
+    }
+
+    return (double)intersectionCount / unionCount;
+}
+```
+Here is the Function
+[MathHelpers.cs](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/NeoCortexApi/Utility/MathHelpers.cs#L182-L205) - Lines (182 to 205)
+
+## Genarate Similarity Graph
+- Note The calling Similarity Function is same like Drwaing Heatmap
+
+We Applied this Function to DrawCombinedSimilarityplot
+Click Below for More Details 
+[DrawCombinedSimilarityPlot](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/NeoCortexUtils/NeoCortexUtils.cs#L428-L536) - Lines (428 to 536)
+**Outcomes:**
+- Bar graphs of similarity for each inputs
+
+
+**Results Example:**
+**Fig: Final Outcome for Numerical input**
+![Final Outcome](https://raw.githubusercontent.com/BidhanPaul/neocortexapi_team.bji/master/source/Docomentation%20neocortexapi_Team.bji/FinalOutcomeExamplecombined_similarity_plot_Image_Inputs.png)
+## Spatial Pooler Reconstruction Tests
 ## UnitTest of SdrReconstructionTests
 We Tested the SdrReconstruction.cs with 9 Test cases and all Passed
 This document provides an overview of the unit tests present in the project.
 [SdrReconstructionTests](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/UnitTestsProject/SdrReconstructionTests.cs)
-
-## Spatial Pooler Reconstruction Tests
-
 ### Reconstruct_ValidInput_ReturnsResult
 - **Test Category:** SpatialPoolerReconstruction
 - **Description:** Verifies whether the `Reconstruct` method in the `SPSdrReconstructor` class behaves correctly under valid input conditions. It ensures that the method returns a dictionary containing keys for all provided active mini-columns, with corresponding permanence values. Additionally, it confirms that the method properly handles the case where a key is not present in the dictionary.
@@ -287,4 +538,3 @@ This document provides an overview of the unit tests present in the project.
 ### IsDictionaryInvalid with Not a Number
 - **Test Category:** DictionaryValidityTests
 - **Description:** Determines whether a dictionary is considered invalid based on specific criteria like null reference, NaN values, and keys less than 0.
-
