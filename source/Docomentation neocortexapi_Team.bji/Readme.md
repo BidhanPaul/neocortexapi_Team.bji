@@ -5,24 +5,24 @@
 
 
 In this Documentation we will describe our contribution in this project.
-#### Instruction for Runnig the Project
+#### Instruction for Running the Project
 - Clone the Repository and Run
 - You will get the project here
 [NeoCortexApiSample](https://github.com/BidhanPaul/neocortexapi_team.bji/tree/master/source/Samples/NeoCortexApiSample)
-#### Two Expriments
+#### Two Experiments
 - **`SpatialPatternLearning.cs`**: Numerical Inputs 
 [SpatialPatternLearning.cs](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/Samples/NeoCortexApiSample/SpatialPatternLearning.cs)
 - **`ImageBinarizerSpatialPattern.cs`**: Image Inputs 
 [ImageBinarizerSpatialPattern.cs](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/Samples/NeoCortexApiSample/ImageBinarizerSpatialPattern.cs)
-###### Image Input set are already uploaded here
+###### Image Input sets are already uploaded here
 - neocortexapi_team.bji\source\Samples\NeoCortexApiSample\bin\Debug\net8.0\Sample\TestFiles
-###### Simply Change the Runnig commands here 
+###### Simply Change the Running commands here 
 - **`Program.cs`**: Goto Program.cs file of NeoCortexApiSample
 - Change the codes here Clieck the Link below and it will Redirect you.
 [Program.cs](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/Samples/NeoCortexApiSample/Program.cs#L23-L28)
 ###### All the output will be saved here
 - neocortexapi_team.bji\source\Samples\NeoCortexApiSample\bin\Debug\net8.0
-#### Runnig Unit Test Expriments
+#### Running Unit Test Experiments
 Go to this File and Run Unit-Test Project for **`SdrReconstructionTests.cs`**
 [SdrReconstructionTests.cs](https://github.com/BidhanPaul/neocortexapi_team.bji/blob/master/source/UnitTestsProject/SdrReconstructionTests.cs)
 ## Introduction
