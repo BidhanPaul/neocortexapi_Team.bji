@@ -490,7 +490,7 @@ Click Below for More Details
 
 
 **Results Example:**
-**Fig: Final Outcome for Numerical input**
+**Fig: Final Outcome for Image  input**
 ![Final Outcome](https://raw.githubusercontent.com/BidhanPaul/neocortexapi_team.bji/master/source/Docomentation%20neocortexapi_Team.bji/FinalOutcomeExamplecombined_similarity_plot_Image_Inputs.png)
 ## Spatial Pooler Reconstruction Tests
 ## UnitTest of SdrReconstructionTests
