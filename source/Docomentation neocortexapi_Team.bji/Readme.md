@@ -1,4 +1,4 @@
-# ML 23/24-04 Implement the Spatial Pooler SDR Reconstruction
+# ML 23/24-05 Implement the visualization of permanence value
 ###### _Through out this project we contribute to  implement the Spatial Pooler SDR Reconstruction in NeoCortexAPI_
 
 [![N|Logo](https://ddobric.github.io/neocortexapi/images/logo-NeoCortexAPI.svg )](https://ddobric.github.io/neocortexapi/)
